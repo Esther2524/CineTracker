@@ -13,10 +13,11 @@ root.render(
       domain='dev-1s3jn85gc06w6mec.us.auth0.com'
       clientId='n9InjD9TVFKtWNAYJ2yUDO9QZP1GPrrK'
       authorizationParams={{
-        redirect_uri: `${window.location.origin}/verify-user`
+        redirect_uri: `${window.location.origin}/verify-user`,
+        audience: 'https://api.cinetracker',
+        scope: 'openid profile email',
+        prompt: 'login'
       }}
-      // audience='https://api.cinetracker'
-      // scope='openid profile email'
     >
       <App />
     </Auth0Provider>

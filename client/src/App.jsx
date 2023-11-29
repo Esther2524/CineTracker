@@ -15,31 +15,28 @@ function App() {
     getAccessTokenSilently // the access token will be used in the backend
   } = useAuth0();
 
+
+  // this is actually the HomePage
   function callApi() {
     axios.get("http://localhost:8000/")
     .then(response => console.log(response.data))
     .catch(error => console.log(error.message));
   }
-  // 这种写法的话 没有登录就call protected API 会报错401
-  // function callProtectedApi() {
-  //   axios.get("http://localhost:8000/protected")
-  //   .then(response => console.log(response.data))
-  //   .catch(error => console.log(error.message));
 
-  // }
 
-  // 这种写法 没有登录就call protected API 会提醒用户log in
+  // this is the Profile page
   async function callProtectedApi() {
     try {
       const token = await getAccessTokenSilently();
-      // console.log(token); //非常长
+      // console.log(token);
   
-      const response = await axios.get("http://localhost:8000/protected", {
+      const response = await axios.get("http://localhost:8000/profile", {
         headers: {
-          'authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
       });
-      console.log(response.user);
+      console.log("from front-end", response.data);// get user info from back-end
+      // console.log(response.data); // output: hello from protected route
 
     } catch(error) {
       console.log(error.message);

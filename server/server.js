@@ -3,13 +3,7 @@ import pkg from "@prisma/client";
 import morgan from "morgan";
 import cors from "cors";
 import { auth } from 'express-oauth2-jwt-bearer';
-
-// import { jwt } from 'express-jwt';
-// import { jwks} from 'jwks-rsa';
-// import { axios } from 'axios';
-
-// type: commonjs 才能用import
-// const { auth } = require('express-oauth2-bearer');
+import axios from 'axios';
 
 const app = express();
 
@@ -19,8 +13,6 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 const PORT = 8000;
-
-
 
 const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
@@ -32,61 +24,59 @@ const jwtCheck = auth({
   tokenSigningAlg: 'RS256'
 });
 
-// const jwtCheck = jwt({
-//   secret: jwks.expressJwtSecret({
-//       cache: true,
-//       rateLimit: true,
-//       jwksRequestsPerMinute: 5,
-//       jwksUri: 'https://dev-1s3jn85gc06w6mec.us.auth0.com/.well-known/jwks.json'
-// }),
-// audience: 'https://api.cinetracker',
-// issuer: 'https://dev-1s3jn85gc06w6mec.us.auth0.com/',
-// algorithms: ['RS256']
-// });
 
 
 
-// // enforce on all endpoints 这个不要用
-// app.use(jwtCheck);
-
-
-// 和react package.json file 最后一行代码对应  "proxy": "http://localhost:8000"
-// Enable CORS for requests from your React application
-// app.use(cors({
-//     origin: 'http://localhost:3000' // Your React app's URL
-//   }));
-
-// const verifyJwt = jwt(
-//   secret: jwks.expressJwtSecret({
-//     cache: true,
-//     ratelimit: true,
-//     jwksRequestsPerMinute: 5,
-//     jwksUri:'https://dev-1s3jn85gc06w6mec.us.auth0.com/'
-
-//   }),
-//   audience: 'https://api.cinetracker',
-//   issuer: '',
-//   algorithms: ['RS256']
-
-// );
-
-
-
-
-// 1. Homepage
+// 1. Homepage endpoint: it can be seen by every user
 app.get('/', (req, res) => {
   res.send("Hello from Homepage!");
 
   }
 );
 
-// 2. protected
-app.get('/protected', jwtCheck, (req, res) => {
-  console.log(req.user+" in server");
-  res.send("Hello from protected page!");
+// 2. profile endpoint: only for logged-in users
+app.get('/profile', jwtCheck, async (req, res) => {
+  try {
+    // Step 1: Extract the access token from the Authorization header
+    const accessToken = req.headers.authorization.split(' ')[1];
 
+    // Step 2: Use the accessToken to make a request to Auth0's /userinfo endpoint
+    // This returns the user's profile information based on the granted scopes
+    const response = await axios.get('https://dev-1s3jn85gc06w6mec.us.auth0.com/userinfo', {
+      headers: {
+        authorization: `Bearer ${accessToken}`
+      }
+    });
+
+    // Step 3: Extract (original) user information from response
+    const userInfo = response.data;
+    // res.send(userInfo);
+
+    // Insert or update user info in the database
+    const user = await prisma.user.upsert({
+      where: { auth0Id: userInfo.sub }, // 'sub' typically contains the Auth0 user ID
+      update: {
+        email: userInfo.email,
+        name: userInfo.name
+      },
+      create: {
+        auth0Id: userInfo.sub,
+        email: userInfo.email,
+        name: userInfo.name
+      }
+    });
+    
+
+    res.send(user);
+
+
+
+  } catch (error) {
+    // Handle any errors that occur during the request
+    console.error('Error fetching user information:', error);
+    res.status(500).send('Internal Server Error');
   }
-);
+});
 
 
 
@@ -95,3 +85,8 @@ app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT} 🎉 🚀`);
 });
   
+
+
+
+// enforce on all endpoints
+// app.use(jwtCheck);
