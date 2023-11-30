@@ -1,38 +1,163 @@
-.App {
+/* App.css */
+.content-container {
+  margin-top: 70px; /* Adjust the value based on your NavBar's height */
+}
+
+.center-title {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+/* App.css */
+
+.login-link, .logout-link, .user-name {
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.user-name-container {
+  position: relative;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 5px;
+  z-index: 1000;
+}
+
+.logout-link {
+  font-size: 0.7em;
+}
+
+
+/* HomePage - ColumnDisplay component */
+.column-movies-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adjust the space between cards */
+  justify-content: center;
+}
+
+.column-movie-card {
+  width: calc(20% - 20px); /* Adjust width for 5 cards per row minus gap */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+}
+
+.column-movie-poster {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+
+
+
+
+/* Details Page - MovieDetails */
+.details-movie-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+}
+
+.details-movie-poster {
+  flex: 1;
+  max-width: 40%; /* Adjust the width as needed */
+}
+
+.details-movie-poster img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px; /* Rounded corners for the image */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for depth */
+}
+
+.details-movie-info {
+  flex: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 10px;
+}
+
+.details-movie-info h1 {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.details-movie-info p {
+  margin: 5px 0;
+  line-height: 1.6;
+}
+
+.details-movie-info p:first-of-type {
+  font-style: italic;
+  text-align: center;
+  color: #555; /* Optional: change color for the tagline */
+}
+
+
+/* buttons */
+.pagination-container {
+  text-align: center; /* Center the buttons horizontally */
+  margin-top: 20px; /* Add top margin for spacing */
+}
+
+.prev-page-button,
+.next-page-button {
+  font-size: 18px; /* Adjust the font size as needed */
+  margin: 2px; /* Add some margin for spacing */
+  padding: 10px 20px; /* Add padding to make the buttons bigger */
+  background-color: #007bff; /* Background color */
+  color: #fff; /* Text color */
+  border: none; /* Remove borders */
+  border-radius: 4px; /* Add rounded corners */
+  cursor: pointer;
+}
+
+.prev-page-button:hover,
+.next-page-button:hover {
+  background-color: #0056b3; /* Change background color on hover */
+}
+
+
+/* Search Component */
+
+
+.search-form {
+  /* Styles for the form */
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-bottom: 20px;
+}
+
+.search-input {
+  /* Styles for the input field */
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-button {
+  /* Styles for the button */
+  padding: 10px 15px;
+  background-color: #007bff;
   color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.search-button:hover {
+  background-color: #0056b3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
+

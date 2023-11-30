@@ -1,10 +1,22 @@
 import './App.css';
 import { useAuth0 } from '@auth0/auth0-react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { NavBar } from './components/NavBar';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import axios from 'axios';
 
+import VerifyUser from './components/VerifyUser';
+import HomePage from './pages/HomePage';
+import DetailsPage from './pages/DetailsPage';
+import SearchResultPage from './pages/SearchResultPage';
+import ProfilePage from './pages/ProfilePage';
+import CollectionPage from './pages/CollectionPage';
+
+const queryClient = new QueryClient();
 
 
 function App() {
+
 
   const {
     loginWithPopup, 
@@ -44,40 +56,38 @@ function App() {
     
   }
 
+  // A helper component for protected routes
+  const ProtectedRoute = ({ children, ...rest }) => {
+    return isAuthenticated ? children : <h1 className="center-text">Access Denied</h1>;
+  };
+
   return (
-    <div className="App">
-    
-      <h1> Test Auth0 Authentication</h1>
-      <ul>
-        <li>
-          <button onClick={loginWithPopup}>loginWithPopUp</button>
-          </li>
-        <li>
-          <button onClick={loginWithRedirect}>loginWithRedirect</button>
-          </li>
-        <li>
-          <button onClick={logout}>logout</button>
-          </li>
-      </ul>
+    <QueryClientProvider client={queryClient}>
+      <div>
 
-      <h3>User is {isAuthenticated? "Logged In" : "Not Logged In"}</h3>
+        <Router>
 
-      <ul>
-        <li><button onClick={callApi}>Call API Route</button></li>
-        <li><button onClick={callProtectedApi}>Call protected API Route</button></li>
-      </ul>
+          <NavBar />
 
-      {
-        isAuthenticated && (
-          <pre style={{textAlign: 'start'}}>
-            {JSON.stringify(user, null, 2)}
-          </pre>
-        )
+          <div className="content-container">
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/search/:searchTerm' element={<SearchResultPage />} />
+              <Route path="/verify-user" element={<VerifyUser />} />
+              <Route path='/details/:movieId' element={<DetailsPage />} />
+
+              {/* protected routes */}
+              {isAuthenticated && <Route path="/profile" element={<ProfilePage />} />}
+              {isAuthenticated && <Route path="/collections" element={<CollectionPage />} />}
+            </Routes>
+          </div>
+
           
-    
-      }
-    </div>
-  );
+        </Router>
+      </div>
+    </QueryClientProvider>
+  )
+
 }
 
 export default App;
