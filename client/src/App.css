@@ -22,7 +22,7 @@
   position: absolute;
   top: 110%;
   left: 0;
-  background-color: white;
+  background-color: rgb(197, 190, 190);
   border: 1px solid #ddd;
   padding: 5px;
   z-index: 1000;
@@ -46,12 +46,36 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   text-align: center;
+  background-color: #e1e4e6;
 }
 
 .column-movie-poster {
   width: 100%;
   height: auto;
   border-radius: 10px;
+  
+}
+
+.movie-title {
+  height: 60px; /* Fixed height for the title */
+  overflow: hidden; /* Hide overflow text */
+  text-align: center;
+  margin: 10px 0; /* Spacing around the title */
+}
+
+.view-detail-button {
+  font-size: 14px; /* Adjust the font size as needed */
+  margin: 2px; /* Add some margin for spacing */
+  padding: 8px 10px; /* Add padding to make the buttons bigger */
+  background-color: #7d7e7f; /* Background color */
+  color: #fff; /* Text color */
+  border: none; /* Remove borders */
+  border-radius: 4px; /* Add rounded corners */
+  cursor: pointer;
+}
+
+.view-detail-button:hover {
+  background-color: rgb(178, 182, 186);
 }
 
 
@@ -69,10 +93,12 @@
 .prev-page-button,
 .next-page-button {
   font-size: 18px; /* Adjust the font size as needed */
-  margin: 2px; /* Add some margin for spacing */
+  margin-top: 30px;
+  margin-bottom: 50px;
+  margin-left: 10px;
   padding: 10px 20px; /* Add padding to make the buttons bigger */
-  background-color: #62686f; /* Background color */
-  color: #fff; /* Text color */
+  background-color: rgb(160, 187, 136); /* Background color */
+  color: rgb(255, 255, 255); /* Text color */
   border: none; /* Remove borders */
   border-radius: 4px; /* Add rounded corners */
   cursor: pointer;
@@ -80,7 +106,7 @@
 
 .prev-page-button:hover,
 .next-page-button:hover {
-  background-color: #a0a1a3; /* Change background color on hover */
+  background-color: #a2d0a2; /* Change background color on hover */
 }
 
 
