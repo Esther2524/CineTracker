@@ -34,6 +34,7 @@ model Movie {
   apiId        Int      @unique // use this id to fetch data from external api
   rating       Int?
   review       String?
+  updatedAt    DateTime @updatedAt
   collectionId Int
   collection   Collection @relation(fields: [collectionId], references: [id])
 }
