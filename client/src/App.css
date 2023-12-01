@@ -71,7 +71,7 @@
   font-size: 18px; /* Adjust the font size as needed */
   margin: 2px; /* Add some margin for spacing */
   padding: 10px 20px; /* Add padding to make the buttons bigger */
-  background-color: #007bff; /* Background color */
+  background-color: #62686f; /* Background color */
   color: #fff; /* Text color */
   border: none; /* Remove borders */
   border-radius: 4px; /* Add rounded corners */
@@ -80,7 +80,7 @@
 
 .prev-page-button:hover,
 .next-page-button:hover {
-  background-color: #0056b3; /* Change background color on hover */
+  background-color: #a0a1a3; /* Change background color on hover */
 }
 
 
@@ -105,7 +105,7 @@
 .search-button {
   /* Styles for the button */
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #75787c;
   color: white;
   border: none;
   border-radius: 4px;
@@ -113,7 +113,7 @@
 }
 
 .search-button:hover {
-  background-color: #0056b3;
+  background-color: #a6a7a8;
 }
 
 
