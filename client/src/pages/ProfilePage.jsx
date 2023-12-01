@@ -1,31 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 
 const ProfilePage = () => {
-    const { user, isAuthenticated, isLoading } = useAuth0();
+	const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+	const [userData, setUserData] = useState(null);
+	const [loadingUserData, setLoadingUserData] = useState(true);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+	useEffect(() => {
+		//  fetchUserData fetches user data from the backend, not Auth0, using the user's email as a key. 
+		const fetchUserData = async () => {
+			if (isAuthenticated && user) {
+				try {
+					const token = await getAccessTokenSilently();
+					const response = await axios.get('http://localhost:8000/api/user', {
+						headers: {
+							Authorization: `Bearer ${token}`
+						}
+					});
+					setUserData(response.data);
+				} catch (error) {
+					console.error('Error fetching user data from backend:', error);
+				} finally {
+					setLoadingUserData(false);
+				}
+			}
+		};
 
-    // // actually I handle it in Navbar
-    // if (!isAuthenticated) {
-    //     return <div>Please log in to view your profile.</div>;
-    // }
+		fetchUserData();
+	}, [isAuthenticated, user, getAccessTokenSilently]);
 
-    return (
-        <div className="profile-page">
-            <h1 className="center-title">Profile Page</h1>
-            {user && (
-                <div>
-                    <img src={user.picture} alt={user.name} />
-                    <h2>{user.name}</h2>
-                    <p>Email: {user.email}</p>
-                    {/* Display other user details here */}
-                </div>
-            )}
-        </div>
-    );
+	if (isLoading || loadingUserData) {
+		return <div>Loading...</div>;
+	}
+
+	return (
+		<div className="profile-page">
+			<h1 className="center-title">Profile Page</h1>
+			{user && (
+				<div>
+					<img src={userData.picture} alt={userData.name} />
+					<h2>{userData.name}</h2>
+					<p>Email: {userData.email}</p>
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default ProfilePage;
