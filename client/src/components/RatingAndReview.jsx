@@ -1,13 +1,22 @@
 // RatingAndReview.jsx
 
 import React, { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const RatingAndReview = ({ onSubmit, movieId }) => {
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      loginWithRedirect();
+      return; // Prevent form submission and redirect to login
+    }
 
     // Check if the rating and review are provided
     if (rating === 0 || review.trim() === '') {
