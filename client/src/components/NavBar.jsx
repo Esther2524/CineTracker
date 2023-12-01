@@ -12,9 +12,6 @@ export const NavBar = () => {
         if (!isAuthenticated) {
             // Prevent default link behavior
             e.preventDefault();
-            // Prompt to log in
-            // alert('Please log in to access this page.');
-            // Optional: Redirect to login page
             loginWithRedirect(); 
         }
     };
@@ -43,12 +40,24 @@ export const NavBar = () => {
                 Profile 
             </Menu.Item>
 
+            <Menu.Item 
+                as={Link} 
+                to="/auth-debugger" 
+                style={{ fontSize: "1.5rem" }} 
+                onClick={handleProtectedItemClick}
+            > 
+                Auth Debugger 
+            </Menu.Item>
+
 
             <Menu.Menu position="right">
                 <Menu.Item style={{ fontSize: "1.5rem" }}> 
                     <AuthButton />
                 </Menu.Item>
             </Menu.Menu>
+
+            
+
         </Menu>
     );
 };
