@@ -17,7 +17,6 @@ model User {
   name         String
   picture      String
   collection   Collection?
-  collectionId Int?        @unique
 }
 
 
