@@ -19,8 +19,7 @@ const CollectionPage = () => {
 
         try {
           const token = await getAccessTokenSilently();
-          const email = user.email;
-          const response = await axios.get(`http://localhost:8000/api/user/${email}/collection`, {
+          const response = await axios.get('http://localhost:8000/api/user/collection', {
             headers: {
               Authorization: `Bearer ${token}`
             }
