@@ -17,7 +17,7 @@ const PORT = 8000;
 const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
 
-// middleware
+// this is a middleware that will validate the access token sent by the client
 const jwtCheck = auth({
   audience: 'https://api.cinetracker',
   issuerBaseURL: 'https://dev-1s3jn85gc06w6mec.us.auth0.com/',
@@ -25,12 +25,18 @@ const jwtCheck = auth({
 });
 
 
+// ping endpoint, this is a public endpoint because it doesn't have the requireAuth middleware
+app.get('/ping', (req, res) => {
+  res.send('pong');
+});
+
 // enforce on all endpoints
-app.use(jwtCheck);
+// app.use(jwtCheck);
 
 // 1. sync the user and the collection
-app.post('/api/user/collection/sync', async (req, res) => {
+app.post('/api/user/collection/sync', jwtCheck, async (req, res) => {
   try {
+    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
     const { email, name, picture } = req.body;
 
     // Upsert user data into the database
@@ -39,7 +45,7 @@ app.post('/api/user/collection/sync', async (req, res) => {
       // It updates the user's name and picture fields with the new values provided in the request.
       update: { name: name, picture: picture },
       // creates a new user record with the provided email and name.
-      create: { email: email, name: name, picture: picture },
+      create: { auth0Id: auth0Id, email: email, name: name, picture: picture },
     });
 
     // Create a collection for the user if it doesn't exist
@@ -62,12 +68,13 @@ app.post('/api/user/collection/sync', async (req, res) => {
 
 
 
-// 2. get the user by email (pass user info to front-end)
-app.get('/api/user/:email', async (req, res) => {
+// 2. get the user (pass user info to front-end for Profile Page)
+app.get('/api/user', jwtCheck, async (req, res) => {
   try {
-    const email = req.params.email;
+    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
+
     const user = await prisma.user.findUnique({
-      where: { email: email }
+      where: { auth0Id: auth0Id }
     });
 
     if (user) {
@@ -84,13 +91,14 @@ app.get('/api/user/:email', async (req, res) => {
 
 
 // 3. post movie rating and review (store rating and review in database)
-app.post('/api/movie/rate-and-review', async (req, res) => {
+app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
   try {
 
     const { apiId, rating, review, userEmail } = req.body; // Include userEmail in the request body
+    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
 
     const user = await prisma.user.findUnique({
-      where: { email: userEmail },
+      where: { auth0Id: auth0Id },
       include: { collection: true } // if i want to access user.collection.id
     });
 
@@ -116,11 +124,11 @@ app.post('/api/movie/rate-and-review', async (req, res) => {
 });
 
 // 4. get all movies in the user's collection
-app.get('/api/user/:email/collection', async (req, res) => {
+app.get('/api/user/collection', jwtCheck, async (req, res) => {
   try {
-    const email = req.params.email;
+    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
     const user = await prisma.user.findUnique({
-      where: { email: email },
+      where: { auth0Id: auth0Id },
       include: { 
         collection: {
           include: {
