@@ -51,7 +51,7 @@ const RatingAndReview = ({ onSubmit, movieId }) => {
                 type="radio"
                 name="rating"
                 value={value}
-                checked={rating === value}
+                checked={rating == value} // should not be ===
                 onChange={e => setRating(e.target.value)}
                 className="radio-input"
               />
