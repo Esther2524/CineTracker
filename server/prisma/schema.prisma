@@ -12,34 +12,29 @@ datasource db {
 
 
 model User {
-  id          Int         @id @default(autoincrement())
-  auth0Id     String      @unique  // Unique identifier from Auth0
-  email       String      @unique
-  name        String
-  collection  Collection?
-  collectionId Int?       // Optional field to explicitly store the collection ID
+  id           Int         @id @default(autoincrement())
+  email        String      @unique
+  name         String
+  picture      String
+  collection   Collection?
+  collectionId Int?        @unique
 }
-// picture
+
 
 
 model Collection {
-  id       Int    @id @default(autoincrement())
-  userId   Int    @unique
+  id       Int      @id @default(autoincrement())
+  userId   Int      @unique
   movies   Movie[]
-  user     User   @relation(fields: [userId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
 }
-
 
 
 model Movie {
   id           Int      @id @default(autoincrement())
-  apiId        Int      @unique
-  title        String
-  description  String
-  releaseDate  DateTime
-  rating       Float?
+  apiId        Int      @unique // use this id to fetch data from external api
+  rating       Int?
   review       String?
   collectionId Int
   collection   Collection @relation(fields: [collectionId], references: [id])
-  // Other fields from the API (e.g., genre, poster_path) can be added as needed
 }
