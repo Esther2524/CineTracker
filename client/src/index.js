@@ -11,11 +11,11 @@ root.render(
   <React.StrictMode>
     {/* wrap App component inside Auth0Provider */}
     <Auth0Provider
-      domain='dev-1s3jn85gc06w6mec.us.auth0.com'
-      clientId='n9InjD9TVFKtWNAYJ2yUDO9QZP1GPrrK'
+      domain={process.env.REACT_APP_AUTH0_DOMAIN}
+      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
       authorizationParams={{
         redirect_uri: `${window.location.origin}/verify-user`,
-        audience: 'https://api.cinetracker',
+        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
         scope: 'openid profile email',
         prompt: 'login'
       }}
