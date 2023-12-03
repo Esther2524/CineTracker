@@ -95,8 +95,9 @@ const ProfilePage = () => {
 				</div>
 			)}
 
-			<h3 className='profile-hint'>You have rated and reviewed...</h3>
-			<div className="profile-movie-collection-shelf">
+
+			<div className='profile-text-display-section'>
+				<h3 className='profile-hint'>You have rated and reviewed...</h3>
 				{movieCollection.length > 0 ? (
 					movieCollection.map((movie) => (
 						<TextDisplay key={movie.apiId} movie={movie} formatDate={formatDate} />
