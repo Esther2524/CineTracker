@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import ColumnDisplay from '../components/ColumnDisplay';
+import CardDisplay from '../components/CardDisplay';
 import fetchMoviesByName from '../externalAPI/fetchMoviesByName';
 
 // 1. Separation of Concerns: SearchResultPage is dedicated to handling and displaying search results, making it more focused and easier to manage.
@@ -33,7 +33,7 @@ const SearchResultPage = () => {
     return (
         <div>
             <h1 className="center-title">Search Results for "{searchTerm}"</h1>
-            <ColumnDisplay data={data?.results} onMovieSelect={handleMovieSelect} />
+            <CardDisplay data={data?.results} onMovieSelect={handleMovieSelect} />
             <div className="pagination-container">
                 <button className="prev-page-button" onClick={handlePrevPage} disabled={currentPage === 1}>
                     Previous Page
