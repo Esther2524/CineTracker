@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
-import { Link, useNavigate } from "react-router-dom"; 
+import TextDisplay from '../components/TextDisplay'; // Adjust this import path as necessary
 
 const ProfilePage = () => {
 	const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
@@ -24,7 +24,6 @@ const ProfilePage = () => {
 					const collectionResponse = await axios.get('http://localhost:8000/api/user/collection', {
 						headers: { Authorization: `Bearer ${token}` }
 					});
-					// console.log(collectionResponse.data)
 					setMovieCollection(collectionResponse.data);
 
 				} catch (error) {
@@ -38,75 +37,50 @@ const ProfilePage = () => {
 		fetchUserData();
 	}, [isAuthenticated, user, getAccessTokenSilently]);
 
+	// Helper function to format a timestamp as "YYYY-MM-DD"
+	function formatDate(timestamp) {
+		const date = new Date(timestamp);
+		const year = date.getFullYear();
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const day = date.getDate().toString().padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+
 	if (isLoading || loadingUserData) {
 		return <div>Loading...</div>;
 	}
 
+	return (
+		<div className="profile-page">
+			<h1 className="center-title">Profile Page</h1>
+			{user && (
+				<div className="profile-user-info-container">
+
+					<img src={userData.picture} alt={userData.name} className='profile-image'/>
+
+					<div className="profile-user-details">
+						<h2>{userData.name}</h2>
+						<p>Email: {userData.email}</p>
+					</div>
+
+				</div>
+			)}
 
 
-	// return (
-	// 	<div className="profile-page">
-	// 		<h1 className="center-title">Profile Page</h1>
-	// 		{user && (
-	// 			<div>
-	// 				<img src={userData.picture} alt={userData.name} />
-	// 				<h2>{userData.name}</h2>
-	// 				<p>Email: {userData.email}</p>
-
-	// 				<h3>{user.name}'s Movie Collection</h3>
-	// 				{movieCollection.length > 0 ? (
-	// 					<ul>
-	// 						{movieCollection.map((movie) => (
-	// 							<li key={movie.id}> {/* Use unique movie id */}
-	// 								<div className="details-movie-poster">
-	// 									<img src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
-	// 								</div>
-	// 								{movie.title}
-	// 							</li>
-	// 						))}
-	// 					</ul>
-	// 				) : (
-	// 					<p>No movies in your collection.</p>
-	// 				)}
-	// 			</div>
-	// 		)}
-	// 	</div>
-	// );
+			<h3 className='profile-hint'>You have rated and reviewed...</h3>
+			<div className="profile-movie-collection-shelf">
+				{movieCollection.length > 0 ? (
+					movieCollection.map((movie) => (
+						<TextDisplay key={movie.apiId} movie={movie} formatDate={formatDate} />
+					))
+				) : (
+					<p className='profile-no-movie-hints'>No movies in your collection.</p>
+				)}
+			</div>
 
 
-
-
-  return (
-    <div className="profile-page">
-      <h1 className="center-title">Profile Page</h1>
-      {user && (
-        <div>
-          <img src={userData.picture} alt={userData.name} />
-          <h2>{userData.name}</h2>
-          <p>Email: {userData.email}</p>
-
-          <h3>My Movie Collection</h3>
-          <div className="movie-collection-shelf">
-            {movieCollection.length > 0 ? (
-              movieCollection.map((movie) => (
-                <div key={movie.apiId} className="movie-item">
-                  <div className="movie-poster">
-                    <img src={`https://image.tmdb.org/t/p/w500${movie.posterPath}`} alt={movie.title} />
-                  </div>
-                  <div className="movie-info">
-                    <Link to={`/details/${movie.apiId}`} className="movie-title">{movie.title}</Link>
-                    <p>Rating: {movie.rating}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No movies in your collection.</p>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+		</div>
+	);
 };
 
 export default ProfilePage;
