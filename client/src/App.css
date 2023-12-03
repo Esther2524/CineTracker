@@ -313,13 +313,39 @@
   margin-top: 5px;
   color: #333; /* Title color */
   font-size: 28px;
-
 }
+
 
 .collection-text p {
   color: #666; /* Text color */
   margin: 8px 0; /* Spacing between paragraphs */
   font-size: 16px;
+}
+.collection-button-actions {
+  margin-top: auto; /* Pushes the buttons to the bottom */
+  padding: 10px 0; /* Spacing above the buttons */
+  display: flex; /* Align buttons in a row */
+  gap: 10px; /* Spacing between buttons */
+  justify-content: flex-end; /* Align buttons to the right */
+}
+
+.collection-button-actions button {
+  padding: 8px 15px; /* Padding inside the buttons */
+  border: none; /* No border */
+  border-radius: 20px; /* Rounded corners */
+  background-color: #727476; /* Background color */
+  color: white; /* Text color */
+  font-weight: bold; /* Font weight */
+  cursor: pointer; /* Cursor changes to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.collection-button-actions button:hover {
+  background-color: #c5cad0; /* Darker shade on hover */
+}
+
+.collection-button-actions button:active {
+  background-color: #003d82; /* Even darker shade when active/clicked */
 }
 
 
