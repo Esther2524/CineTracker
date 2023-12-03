@@ -125,12 +125,13 @@ app.get('/api/user/collection', jwtCheck, async (req, res) => {
 
 
 
-// 4. add or update movie rating and review 
+// 4. create a new movie rating and review 
 // (store rating and review in database)
 app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
   try {
 
-    const { apiId, rating, review } = req.body; // Include userEmail in the request body
+    const { apiId, title, posterPath, rating, review } = req.body; 
+    // console.log(req.body);
     const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
 
     const user = await prisma.user.findUnique({
@@ -138,18 +139,20 @@ app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
       include: { collection: true } // if i want to access user.collection.id
     });
 
+    // console.log(user);
+
     const collectionId = user.collection ? user.collection.id : null;
 
-    // Upsert the movie with rating and review
-    const movie = await prisma.movie.upsert({
-      where: { apiId: apiId },
-      update: { rating: rating, review: review },
-      create: {
+    // create the movie with rating and review
+    const movie = await prisma.movie.create({
+      data: {
         apiId: apiId,
+        title: title,
+        posterPath: posterPath,
         rating: rating,
         review: review,
         collectionId: collectionId
-      },
+      }
     });
 
     res.json(movie);
@@ -160,9 +163,44 @@ app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
 });
 
 
+// 5. update an existing movie's rating and review
+app.put('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
+  try {
+    // const { apiId } = req.params;
+    const { apiId, rating, review } = req.body;
+    const auth0Id = req.auth.payload.sub;
+
+    const user = await prisma.user.findUnique({
+      where: { auth0Id: auth0Id },
+      include: { collection: true }
+    });
+
+    const collectionId = user.collection ? user.collection.id : null;
+
+    const movie = await prisma.movie.updateMany({
+      where: {
+        apiId: apiId,
+        collectionId: collectionId
+      },
+      data: { rating: rating, review: review }
+    });
+
+    if (movie.count === 0) {
+      return res.status(404).send('Movie not found or not part of the user\'s collection');
+    }
+
+    res.json(movie);
+  } catch (error) {
+    console.error('Error updating movie:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 
-// 5. delete a movie from the user's collection
+
+
+
+// 6. delete a movie from the user's collection
 app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
   try {
     const auth0Id = req.auth.payload.sub;
