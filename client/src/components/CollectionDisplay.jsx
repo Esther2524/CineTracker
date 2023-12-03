@@ -81,14 +81,19 @@ const CollectionDisplay = ({ collectionData, setCollectionData }) => {
 
           <div className='collection-text'>
             <h2>{`${movie.title || 'N/A'}`}</h2>
-            <p>{`My Rating: ${movie.rating}`}</p>
-            <p>{`My Review: ${movie.review}`}</p>
-            <p>{`Collection Date: ${formatDate(movie.updatedAt)}`}</p>
-            <p>Overview: {movie.overview}</p>
-            <p>Genres: {movie.genres.map(genre => genre.name).join(', ')}</p>
-            <p>Release Date: {movie.release_date}</p>
+            <div className='collection-rating-and-review'>
+            <p><span className='bold-text'>My Rating: </span>{movie.rating}</p>
+            <p><span className='bold-text'>My Review: </span>{movie.review}</p>
+            <p><span className='bold-text'>Collected at: </span>{formatDate(movie.updatedAt)}</p>
+           </div>
+            <div className='collection-movie-info'>
+            <p><span className='bold-text'>Overview: </span>{movie.overview}</p>
+            <p><span className='bold-text'>Genres: </span>{movie.genres.map(genre => genre.name).join(', ')}</p>
+            <p><span className='bold-text'>Release Date: </span>{movie.release_date}</p>
+            </div>
 
 
+            </div>
           <div className="collection-button-actions">
             <button onClick={() => handleEdit(movie.apiId)}>
               Edit
@@ -97,7 +102,7 @@ const CollectionDisplay = ({ collectionData, setCollectionData }) => {
               Delete
             </button>
           </div>
-          </div>
+        
 
 
         </div>
