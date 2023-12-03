@@ -33,6 +33,8 @@ model Collection {
 model Movie {
   id           Int      @id @default(autoincrement())
   apiId        Int      @unique // use this id to fetch data from external api
+  title        String
+  posterPath   String
   rating       Int?
   review       String?
   updatedAt    DateTime @updatedAt
