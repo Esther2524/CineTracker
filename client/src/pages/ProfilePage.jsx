@@ -11,7 +11,6 @@ const ProfilePage = () => {
 	const [editPopupVisible, setEditPopupVisible] = useState(false);
 	const [newName, setNewName] = useState('');
 
-
 	useEffect(() => {
 		const fetchUserData = async () => {
 			if (isAuthenticated && user) {
@@ -23,11 +22,16 @@ const ProfilePage = () => {
 					});
 					setUserData(userResponse.data);
 
-					// get movie info from backend
+					// get movie info from backend and sort by updatedAt
 					const collectionResponse = await axios.get('http://localhost:8000/api/user/collection', {
 						headers: { Authorization: `Bearer ${token}` }
 					});
-					setMovieCollection(collectionResponse.data);
+
+					// sort movie collection by updatedAt
+					const sortedCollection = collectionResponse.data.sort((a, b) => {
+						return new Date(b.updatedAt) - new Date(a.updatedAt);
+					});
+					setMovieCollection(sortedCollection);
 
 				} catch (error) {
 					console.error('Error fetching data:', error);
@@ -40,13 +44,10 @@ const ProfilePage = () => {
 		fetchUserData();
 	}, [isAuthenticated, user, getAccessTokenSilently]);
 
-
 	const handleSaveNewName = async () => {
 		try {
 			const token = await getAccessTokenSilently();
-			await axios.put('http://localhost:8000/api/user', { 
-				newName 
-			}, {
+			await axios.put('http://localhost:8000/api/user', { newName }, {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 			setUserData({ ...userData, name: newName });
@@ -56,7 +57,6 @@ const ProfilePage = () => {
 		}
 	};
 
-	// Helper function to format a timestamp as "YYYY-MM-DD"
 	function formatDate(timestamp) {
 		const date = new Date(timestamp);
 		const year = date.getFullYear();
@@ -74,16 +74,13 @@ const ProfilePage = () => {
 			<h1 className="center-title">Profile Page</h1>
 			{user && (
 				<div className="profile-user-info-container">
-
 					<img src={userData.picture} alt={userData.name} className='profile-image' />
-
 					<div className="profile-user-details">
 						<h2>{userData.name}</h2>
 						<p>Email: {userData.email}</p>
-						{/* add a button to edit user name */}
 						<button onClick={() => setEditPopupVisible(true)} className='profile-edit-button'>
 							Edit
-						</button> 
+						</button>
 					</div>
 
 					{editPopupVisible && (
@@ -95,10 +92,8 @@ const ProfilePage = () => {
 							</div>
 						</div>
 					)}
-
 				</div>
 			)}
-
 
 			<h3 className='profile-hint'>You have rated and reviewed...</h3>
 			<div className="profile-movie-collection-shelf">
@@ -110,8 +105,6 @@ const ProfilePage = () => {
 					<p className='profile-no-movie-hints'>Oops, no movies...</p>
 				)}
 			</div>
-
-
 		</div>
 	);
 };
