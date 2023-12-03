@@ -39,10 +39,9 @@ const DetailsPage = () => {
     try {
       const token = await getAccessTokenSilently();
       await axios.post(`http://localhost:8000/api/movie/rate-and-review`, {
-        apiId: parseInt(movieId), //
+        apiId: parseInt(movieId), 
         rating: parseInt(rating),
         review: review,
-        userEmail: user.email // I need the user's email from Auth0 and pass it to backend 
       }, {
         headers: {
           Authorization: `Bearer ${token}`
