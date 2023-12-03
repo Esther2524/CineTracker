@@ -3,7 +3,7 @@ import pkg from "@prisma/client";
 import morgan from "morgan";
 import cors from "cors";
 import { auth } from 'express-oauth2-jwt-bearer';
-import axios from 'axios';
+
 
 const app = express();
 
@@ -89,12 +89,29 @@ app.get('/api/user', jwtCheck, async (req, res) => {
   }
 });
 
+// 3. get all movies in the user's collection
+app.get('/api/user/collection', jwtCheck, async (req, res) => {
+  try {
+    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
+    const user = await prisma.user.findUnique({
+      where: { auth0Id: auth0Id },
+      include: {
+        collection: {
+          include: {
+            movies: true
+          }
+        }
+      }
+    });
 
-// 3. post movie rating and review (store rating and review in database)
+
+
+// 4. add or update movie rating and review 
+// (store rating and review in database)
 app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
   try {
 
-    const { apiId, rating, review, userEmail } = req.body; // Include userEmail in the request body
+    const { apiId, rating, review } = req.body; // Include userEmail in the request body
     const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
 
     const user = await prisma.user.findUnique({
@@ -123,26 +140,10 @@ app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
   }
 });
 
-// 4. get all movies in the user's collection
-app.get('/api/user/collection', jwtCheck, async (req, res) => {
-  try {
-    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
-    const user = await prisma.user.findUnique({
-      where: { auth0Id: auth0Id },
-      include: { 
-        collection: {
-          include: {
-            movies: true
-          }
-        }
-      }
-    });
-    
-
     const movies = user.collection.movies;
 
     if (user) {
-      res.json(movies);
+      res.json(movies); // return movie object
       // console.log("user exists")
     } else {
       res.status(404).send('User or collection not found');
@@ -154,9 +155,38 @@ app.get('/api/user/collection', jwtCheck, async (req, res) => {
 });
 
 
+// 5. delete a movie from the user's collection
+app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
+  try {
+    const auth0Id = req.auth.payload.sub;
+    const { apiId } = req.params;
 
+    // Find the user
+    const user = await prisma.user.findUnique({
+      where: { auth0Id: auth0Id },
+      include: {
+        collection: true
+      }
+    });
 
+    if (user && user.collection) {
+      // Delete the movie from the collection
+      await prisma.movie.deleteMany({
+        where: {
+          apiId: parseInt(apiId),
+          collectionId: user.collection.id
+        }
+      });
 
+      res.send('Movie deleted from collection');
+    } else {
+      res.status(404).send('User or collection not found');
+    }
+  } catch (error) {
+    console.error('Error deleting movie from collection:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 
 
