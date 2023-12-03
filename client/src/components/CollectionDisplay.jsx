@@ -29,7 +29,8 @@ const CollectionDisplay = ({ collectionData, setCollectionData }) => {
     if (newRating != null && newReview != null) {
       try {
         const token = await getAccessTokenSilently();
-        await axios.post(`http://localhost:8000/api/movie/rate-and-review`, {
+        // update movie rating and review, we only need apiId, rating and review
+        await axios.put(`http://localhost:8000/api/movie/rate-and-review`, {
           apiId: parseInt(movieId),
           rating: parseInt(newRating),
           review: newReview
