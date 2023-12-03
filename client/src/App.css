@@ -7,6 +7,11 @@
   text-align: center;
 }
 
+.bold-text {
+  font-weight: bold;
+}
+
+
 
 /* App.css */
 
@@ -286,17 +291,17 @@
   display: flex;
   background-color: #f2f2f2; /* Card background color */
   border-radius: 8px; /* Rounded corners for the card */
-  margin-bottom: 30px; /* Space between cards */
+  margin-bottom: 40px; /* Space between cards */
   margin-left: 40px;
   margin-right: 40px;
-  margin-top: 30px;
+  margin-top: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Card shadow */
   overflow: hidden; /* Ensures the border-radius clips the content */
 }
 
 .collection-poster {
   flex: 1; /* Assigns equal width to both the poster and text if possible */
-  max-width: 200px; /* Adjust this value based on your preference */
+  max-width: 250px; /* Adjust this value based on your preference */
 }
 
 .collection-poster img {
@@ -315,14 +320,24 @@
   font-size: 28px;
 }
 
-
 .collection-text p {
   color: #666; /* Text color */
   margin: 8px 0; /* Spacing between paragraphs */
   font-size: 16px;
 }
+
+.collection-rating-and-review {
+  margin-top: 20px;
+}
+
+.collection-movie-info {
+  margin-top: 20px;
+}
+
 .collection-button-actions {
   margin-top: auto; /* Pushes the buttons to the bottom */
+  margin-right: 30px;
+  margin-bottom: 10px;
   padding: 10px 0; /* Spacing above the buttons */
   display: flex; /* Align buttons in a row */
   gap: 10px; /* Spacing between buttons */
@@ -330,7 +345,8 @@
 }
 
 .collection-button-actions button {
-  padding: 8px 15px; /* Padding inside the buttons */
+  padding: 12px 20px; /* Increased padding for a larger button */
+  font-size: 14px; /* Larger font size */
   border: none; /* No border */
   border-radius: 20px; /* Rounded corners */
   background-color: #727476; /* Background color */
@@ -341,12 +357,89 @@
 }
 
 .collection-button-actions button:hover {
-  background-color: #c5cad0; /* Darker shade on hover */
+  background-color: #3d3f42; /* Darker shade on hover */
 }
 
 .collection-button-actions button:active {
-  background-color: #003d82; /* Even darker shade when active/clicked */
+  background-color: #505152; /* Even darker shade when active/clicked */
 }
+
+
+.collection-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.collection-popup-content {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 350px; /* Adjust width as needed */
+  max-width: 90%;
+}
+
+.collection-popup-content label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.collection-popup-content input[type="number"],
+.collection-popup-content textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* Makes sure padding doesn't affect overall width */
+  font-size: 14px;
+}
+
+.collection-popup-content textarea {
+  height: 120px;
+  resize: vertical;
+  margin-top: 15px; /* Added space between rating input and review textarea */
+}
+
+.collection-popup-content button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #6c757d;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.collection-popup-content button:hover {
+  background-color: #b0b2b4;
+}
+
+.collection-popup-content button:last-child {
+  background-color: #6c757d; /* Cancel button color */
+  margin-left: 20px;
+}
+
+.collection-popup-content button:last-child:hover {
+  background-color: #b0b2b4;
+}
+
+
+
 
 
 /* Debugger Page */
@@ -376,4 +469,131 @@
   font-size: 14px;
   resize: none; /* Optional: prevents resizing of the textarea */
 }
+
+
+
+/* Profile Page */
+.profile-user-info-container {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  justify-content: center; /* Center items horizontally */
+  margin-bottom: 30px; /* Space between user info and collection list */
+  margin-top: 50px;
+  width: 100%; /* Full width to allow centering */
+}
+
+.profile-image {
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  border-radius: 50%; /* Circular picture */
+  margin-right: 20px; /* Space between picture and details */
+}
+
+
+
+.profile-hint {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+.profile-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.profile-edit-button {
+  padding: 8px 12px; /* Adds padding inside the button */
+  background-color: #7d7e81; /* Sets a primary color */
+  color: white; /* Text color */
+  border: none; /* Removes the border */
+  border-radius: 20px; /* Rounds the corners */
+  cursor: pointer; /* Changes the cursor on hover */
+  font-size: 16px; /* Sets a comfortable font size */
+  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.profile-edit-button:hover {
+  background-color: #bbbfc2; /* Darkens the button on hover */
+}
+
+
+
+.profile-movie-collection-shelf {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the items vertically */
+  gap: 30px;
+}
+
+.profile-movie-item {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  width: 60%; /* Adjust the width as needed */
+  max-width: 800px; /* Maximum width */
+  margin: 0 auto; /* Center the item horizontally */
+  color: #333; /* Dark color for title */
+  font-size: 18px; /* Slightly larger font for title */
+  font-weight: bold; /* Bold font for title */
+  
+}
+
+
+.profile-movie-item:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+}
+
+
+.profile-movie-title {
+  text-decoration: none; /* Remove underline from link */
+  color: #cf572f; /* Hyperlink color */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+  display: block; 
+  margin-bottom: 10px;
+  text-align: center; /* Center the title */
+}
+
+.profile-movie-title:hover {
+  text-decoration: none; /* Ensure no underline on hover */
+  color: #9d4c34; /* Different color on hover */
+}
+
+.profile-time {
+  font-size: 14px; /* Smaller font size */
+  font-style: italic; /* Italic font style */
+  text-align: center; /* Center the time text */
+  margin-bottom: 10px; /* Space between time and rating/review */
+}
+
+.profile-movie-rating-and-review {
+  color: #666; /* Dark grey color for text */
+  margin: 5px 0; /* Spacing between lines */
+}
+
+.profile-no-movie-hints {
+  text-align: center; /* Center text horizontally */
+  width: 100%; /* Ensure it takes the full width for proper centering */
+  margin-top: 20px; /* Add some space at the top */
+  font-size: 18px; /* Optional: Adjust font size */
+  color: #666; /* Optional: Adjust text color */
+}
+
+
 
