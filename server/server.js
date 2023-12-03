@@ -90,117 +90,117 @@ app.get('/api/user', jwtCheck, async (req, res) => {
 });
 
 
-  
+
 // 3. get all movies in the user's collection
 app.get('/api/user/collection', jwtCheck, async (req, res) => {
-    try {
-      const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
+  try {
+    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
 
-      // Find the user and include their collection and movies
-      const user = await prisma.user.findUnique({
-        where: { auth0Id: auth0Id },
-        include: {
-          collection: {
-            include: {
-              movies: true
-            }
+    // Find the user and include their collection and movies
+    const user = await prisma.user.findUnique({
+      where: { auth0Id: auth0Id },
+      include: {
+        collection: {
+          include: {
+            movies: true
           }
+        }
+      }
+    });
+
+    // Check if the user and their collection exist
+    if (user && user.collection) {
+      // Return the movies in the user's collection
+      res.json(user.collection.movies);
+    } else {
+      // Handle cases where the user or collection is not found
+      res.status(404).send('User or collection not found');
+    }
+  } catch (error) {
+    console.error('Error fetching user collection:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+// 4. add or update movie rating and review 
+// (store rating and review in database)
+app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
+  try {
+
+    const { apiId, rating, review } = req.body; // Include userEmail in the request body
+    const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
+
+    const user = await prisma.user.findUnique({
+      where: { auth0Id: auth0Id },
+      include: { collection: true } // if i want to access user.collection.id
+    });
+
+    const collectionId = user.collection ? user.collection.id : null;
+
+    // Upsert the movie with rating and review
+    const movie = await prisma.movie.upsert({
+      where: { apiId: apiId },
+      update: { rating: rating, review: review },
+      create: {
+        apiId: apiId,
+        rating: rating,
+        review: review,
+        collectionId: collectionId
+      },
+    });
+
+    res.json(movie);
+  } catch (error) {
+    console.error('Error saving rating and review:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+// 5. delete a movie from the user's collection
+app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
+  try {
+    const auth0Id = req.auth.payload.sub;
+    const { apiId } = req.params;
+
+    // Find the user
+    const user = await prisma.user.findUnique({
+      where: { auth0Id: auth0Id },
+      include: {
+        collection: true
+      }
+    });
+
+    if (user && user.collection) {
+      // Delete the movie from the collection
+      await prisma.movie.deleteMany({
+        where: {
+          apiId: parseInt(apiId),
+          collectionId: user.collection.id
         }
       });
 
-      // Check if the user and their collection exist
-      if (user && user.collection) {
-        // Return the movies in the user's collection
-        res.json(user.collection.movies);
-      } else {
-        // Handle cases where the user or collection is not found
-        res.status(404).send('User or collection not found');
-      }
-    } catch (error) {
-      console.error('Error fetching user collection:', error);
-      res.status(500).send('Internal Server Error');
+      res.send('Movie deleted from collection');
+    } else {
+      res.status(404).send('User or collection not found');
     }
-  });
+  } catch (error) {
+    console.error('Error deleting movie from collection:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 
 
-
-    // 4. add or update movie rating and review 
-    // (store rating and review in database)
-    app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
-      try {
-
-        const { apiId, rating, review } = req.body; // Include userEmail in the request body
-        const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
-
-        const user = await prisma.user.findUnique({
-          where: { auth0Id: auth0Id },
-          include: { collection: true } // if i want to access user.collection.id
-        });
-
-        const collectionId = user.collection ? user.collection.id : null;
-
-        // Upsert the movie with rating and review
-        const movie = await prisma.movie.upsert({
-          where: { apiId: apiId },
-          update: { rating: rating, review: review },
-          create: {
-            apiId: apiId,
-            rating: rating,
-            review: review,
-            collectionId: collectionId
-          },
-        });
-
-        res.json(movie);
-      } catch (error) {
-        console.error('Error saving rating and review:', error);
-        res.status(500).send('Internal Server Error');
-      }
-    });
-
-
-
-
-    // 5. delete a movie from the user's collection
-    app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
-      try {
-        const auth0Id = req.auth.payload.sub;
-        const { apiId } = req.params;
-
-        // Find the user
-        const user = await prisma.user.findUnique({
-          where: { auth0Id: auth0Id },
-          include: {
-            collection: true
-          }
-        });
-
-        if (user && user.collection) {
-          // Delete the movie from the collection
-          await prisma.movie.deleteMany({
-            where: {
-              apiId: parseInt(apiId),
-              collectionId: user.collection.id
-            }
-          });
-
-          res.send('Movie deleted from collection');
-        } else {
-          res.status(404).send('User or collection not found');
-        }
-      } catch (error) {
-        console.error('Error deleting movie from collection:', error);
-        res.status(500).send('Internal Server Error');
-      }
-    });
-
-
-
-    // Start the server
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT} 🎉 🚀`);
-    });
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT} 🎉 🚀`);
+});
 
 
 
