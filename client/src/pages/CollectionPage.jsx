@@ -58,7 +58,7 @@ const CollectionPage = () => {
     <div className="collection-page">
       <h1 className="center-title">Collection Page</h1>
       {collectionData && collectionData.length > 0 ? (
-        <CollectionDisplay collectionData={collectionData} />
+        <CollectionDisplay collectionData={collectionData} setCollectionData={setCollectionData} />
       ) : (
         <p>No movies in your collection.</p>
       )}
