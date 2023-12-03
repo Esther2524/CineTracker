@@ -32,7 +32,7 @@ const CollectionDisplay = ({ collectionData, setCollectionData }) => {
   const handleSaveEdit = async (editedData) => {
     try {
       const token = await getAccessTokenSilently();
-      
+
       // Assuming the backend expects the movie ID as part of the URL
       await axios.put(`http://localhost:8000/api/movie/rate-and-review/${currentEditingMovie.apiId}`, {
         rating: parseInt(editedData.rating),
@@ -42,85 +42,95 @@ const CollectionDisplay = ({ collectionData, setCollectionData }) => {
           Authorization: `Bearer ${token}`
         }
       });
-  
+
       // Update the movie in the local state
-      setCollectionData(collectionData.map(movie => 
+      setCollectionData(collectionData.map(movie =>
         movie.apiId === currentEditingMovie.apiId ? { ...movie, ...editedData } : movie
       ));
-  
+
       // Close the popup
       setEditPopupVisible(false);
     } catch (error) {
       console.error('Error updating movie:', error);
     }
   };
-  
-
-
-
-
-const handleDelete = async (movieId) => {
-  try {
-    const token = await getAccessTokenSilently();
-    await axios.delete(`http://localhost:8000/api/movie/${movieId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    // Filter out the deleted movie from collectionData
-    setCollectionData(collectionData.filter(movie => movie.apiId !== movieId));
-  } catch (error) {
-    console.error('Error deleting movie:', error);
-  }
-};
 
 
 
 
 
-return (
-  <div>
-    {collectionData.map((movie, index) => (
-      <div key={index} className="collection-movie-item">
+  const handleDelete = async (movieId) => {
+    try {
+      const token = await getAccessTokenSilently();
+      await axios.delete(`http://localhost:8000/api/movie/${movieId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      // Filter out the deleted movie from collectionData
+      setCollectionData(collectionData.filter(movie => movie.apiId !== movieId));
+    } catch (error) {
+      console.error('Error deleting movie:', error);
+    }
+  };
 
-        <div className='collection-poster'>
-          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-        </div>
 
-        <div className='collection-text'>
-          <h2>{`${movie.title || 'N/A'}`}</h2>
-          <div className='collection-rating-and-review'>
-            <p><span className='bold-text'>My Rating: </span>{movie.rating}</p>
-            <p><span className='bold-text'>My Review: </span>{movie.review}</p>
-            <p><span className='bold-text'>Collected at: </span>{formatDate(movie.updatedAt)}</p>
-          </div>
-          <div className='collection-movie-info'>
-            <p><span className='bold-text'>Overview: </span>{movie.overview}</p>
-            <p><span className='bold-text'>Genres: </span>{movie.genres.map(genre => genre.name).join(', ')}</p>
-            <p><span className='bold-text'>Release Date: </span>{movie.release_date}</p>
+
+
+
+  return (
+    <div>
+      {collectionData.map((movie, index) => (
+        <div key={index} className="collection-movie-item">
+
+          <div className='collection-poster'>
+            <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
           </div>
 
+          <div className='collection-text'>
+            <h2>{`${movie.title || 'N/A'}`}</h2>
+
+            <div className='collection-rating-and-review'>
+              <p><span className='bold-text'>My Rating: </span>{movie.rating}</p>
+              <p><span className='bold-text'>My Review: </span>{movie.review}</p>
+              <p><span className='bold-text'>Collected at: </span>{formatDate(movie.updatedAt)}</p>
+            </div>
+
+            <div className='collection-movie-info'>
+              <p><span className='bold-text'>Overview: </span>{movie.overview}</p>
+              <p><span className='bold-text'>Genres: </span>{movie.genres.map(genre => genre.name).join(', ')}</p>
+              <p><span className='bold-text'>Release Date: </span>{movie.release_date}</p>
+            </div>
+
+            <div className="collection-button-actions">
+
+              <button onClick={() => handleEditClick(movie.apiId)}>
+                Edit
+              </button>
+
+              <button onClick={() => handleDelete(movie.apiId)}>
+                Delete
+              </button>
+
+            </div>
+
+
+          </div>
+
+
+
 
         </div>
-        <div className="collection-button-actions">
-          <button onClick={() => handleEditClick(movie.apiId)}>
-            Edit
-          </button>
-          <button onClick={() => handleDelete(movie.apiId)}>
-            Delete
-          </button>
-        </div>
-      </div>
-    ))}
+      ))}
 
-    <MovieEditPopup
-      isOpen={editPopupVisible}
-      onClose={() => setEditPopupVisible(false)}
-      onSave={handleSaveEdit}
-      defaultData={currentEditingMovie || {}}
-    />
-  </div>
-);
+      <MovieEditPopup
+        isOpen={editPopupVisible}
+        onClose={() => setEditPopupVisible(false)}
+        onSave={handleSaveEdit}
+        defaultData={currentEditingMovie || {}}
+      />
+    </div>
+  );
 };
 
 export default CollectionDisplay;
