@@ -125,13 +125,12 @@ app.get('/api/user/collection', jwtCheck, async (req, res) => {
 
 
 
-// 4. create a new movie rating and review 
+// 4. create a new movie rating and review (DetailsPage, submit)
 // (store rating and review in database)
 app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
   try {
 
-    const { apiId, title, posterPath, rating, review } = req.body; 
-    // console.log(req.body);
+    const { apiId, title, posterPath, rating, review } = req.body; // Include userEmail in the request body
     const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
 
     const user = await prisma.user.findUnique({
@@ -139,20 +138,20 @@ app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
       include: { collection: true } // if i want to access user.collection.id
     });
 
-    // console.log(user);
-
     const collectionId = user.collection ? user.collection.id : null;
 
-    // create the movie with rating and review
-    const movie = await prisma.movie.create({
-      data: {
+    // Upsert the movie with rating and review
+    const movie = await prisma.movie.upsert({
+      where: { apiId: apiId },
+      update: { rating: rating, review: review },
+      create: {
         apiId: apiId,
         title: title,
         posterPath: posterPath,
         rating: rating,
         review: review,
         collectionId: collectionId
-      }
+      },
     });
 
     res.json(movie);
@@ -163,11 +162,11 @@ app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
 });
 
 
-// 5. update an existing movie's rating and review
-app.put('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
+// 5. update an existing movie's rating and review (ProfilePage, edit)
+app.put('/api/movie/rate-and-review/:apiId', jwtCheck, async (req, res) => {
   try {
-    // const { apiId } = req.params;
-    const { apiId, rating, review } = req.body;
+    const { apiId } = req.params;
+    const {rating, review } = req.body;
     const auth0Id = req.auth.payload.sub;
 
     const user = await prisma.user.findUnique({
@@ -179,7 +178,7 @@ app.put('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
 
     const movie = await prisma.movie.updateMany({
       where: {
-        apiId: apiId,
+        apiId: parseInt(apiId),
         collectionId: collectionId
       },
       data: { rating: rating, review: review }
@@ -200,7 +199,7 @@ app.put('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
 
 
 
-// 6. delete a movie from the user's collection
+// 6. delete a movie from the user's collection (ProfilePage, delete)
 app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
   try {
     const auth0Id = req.auth.payload.sub;
