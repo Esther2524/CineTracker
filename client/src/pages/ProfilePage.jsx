@@ -8,6 +8,9 @@ const ProfilePage = () => {
 	const [userData, setUserData] = useState(null);
 	const [loadingUserData, setLoadingUserData] = useState(true);
 	const [movieCollection, setMovieCollection] = useState([]);
+	const [editPopupVisible, setEditPopupVisible] = useState(false);
+	const [newName, setNewName] = useState('');
+
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -37,6 +40,22 @@ const ProfilePage = () => {
 		fetchUserData();
 	}, [isAuthenticated, user, getAccessTokenSilently]);
 
+
+	const handleSaveNewName = async () => {
+		try {
+			const token = await getAccessTokenSilently();
+			await axios.put('http://localhost:8000/api/user', { 
+				newName 
+			}, {
+				headers: { Authorization: `Bearer ${token}` }
+			});
+			setUserData({ ...userData, name: newName });
+			setEditPopupVisible(false);
+		} catch (error) {
+			console.error('Error updating name:', error);
+		}
+	};
+
 	// Helper function to format a timestamp as "YYYY-MM-DD"
 	function formatDate(timestamp) {
 		const date = new Date(timestamp);
@@ -56,12 +75,26 @@ const ProfilePage = () => {
 			{user && (
 				<div className="profile-user-info-container">
 
-					<img src={userData.picture} alt={userData.name} className='profile-image'/>
+					<img src={userData.picture} alt={userData.name} className='profile-image' />
 
 					<div className="profile-user-details">
 						<h2>{userData.name}</h2>
 						<p>Email: {userData.email}</p>
+						{/* add a button to edit user name */}
+						<button onClick={() => setEditPopupVisible(true)} className='profile-edit-button'>
+							Edit
+						</button> 
 					</div>
+
+					{editPopupVisible && (
+						<div className="profile-popup-overlay">
+							<div className="profile-popup-content">
+								<input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
+								<button onClick={handleSaveNewName}>Save</button>
+								<button onClick={() => setEditPopupVisible(false)}>Cancel</button>
+							</div>
+						</div>
+					)}
 
 				</div>
 			)}
@@ -74,7 +107,7 @@ const ProfilePage = () => {
 						<TextDisplay key={movie.apiId} movie={movie} formatDate={formatDate} />
 					))
 				) : (
-					<p className='profile-no-movie-hints'>No movies in your collection.</p>
+					<p className='profile-no-movie-hints'>Oops, no movies...</p>
 				)}
 			</div>
 
