@@ -327,7 +327,7 @@
 .collection-movie-item {
   display: flex;
   background-color: #f2f2f2; /* Card background color */
-  border-radius: 8px; /* Rounded corners for the card */
+  border-radius: 15px; /* Rounded corners for the card */
   margin-bottom: 40px; /* Space between cards */
   margin-left: 40px;
   margin-right: 40px;
@@ -348,7 +348,7 @@
 
 .collection-text {
   flex: 2; /* Allows the text section to take more space than the image */
-  padding: 15px; /* Spacing inside the text container */
+  padding: 20px; /* Spacing inside the text container */
 }
 
 .collection-text h2 {
@@ -377,7 +377,7 @@
   margin-bottom: 10px;
   padding: 10px 0; /* Spacing above the buttons */
   display: flex; /* Align buttons in a row */
-  gap: 10px; /* Spacing between buttons */
+  gap: 15px; /* Spacing between buttons */
   justify-content: flex-end; /* Align buttons to the right */
 }
 
@@ -390,7 +390,7 @@
   color: white; /* Text color */
   font-weight: bold; /* Font weight */
   cursor: pointer; /* Cursor changes to pointer on hover */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  transition: background-color 0.5s ease; /* Smooth transition for hover effect */
 }
 
 .collection-button-actions button:hover {
