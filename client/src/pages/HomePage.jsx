@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import ColumnDisplay from '../components/ColumnDisplay';
+import CardDisplay from '../components/CardDisplay';
 import fetchPopularMovies from '../externalAPI/fetchPopularMovies';
 
 const HomePage = () => {
@@ -47,7 +47,7 @@ const HomePage = () => {
         <div>Loading...</div>
       ) : (
         <div>
-          <ColumnDisplay data={data?.results} onMovieSelect={handleMovieSelect} />
+          <CardDisplay data={data?.results} onMovieSelect={handleMovieSelect} />
           <div className="pagination-container">
             <button className="prev-page-button" onClick={handlePrevPage} disabled={currentPage === 1}>
               Previous Page
