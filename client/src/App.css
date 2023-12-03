@@ -75,7 +75,7 @@
   background-color: #7d7e7f; /* Background color */
   color: #fff; /* Text color */
   border: none; /* Remove borders */
-  border-radius: 4px; /* Add rounded corners */
+  border-radius: 10px; /* Add rounded corners */
   cursor: pointer;
 }
 
@@ -100,19 +100,54 @@
   font-size: 18px; /* Adjust the font size as needed */
   margin-top: 30px;
   margin-bottom: 50px;
-  margin-left: 10px;
+  margin-left: 20px;
   padding: 10px 20px; /* Add padding to make the buttons bigger */
-  background-color: rgb(160, 187, 136); /* Background color */
+  background-color: #67729D; /* Background color */
   color: rgb(255, 255, 255); /* Text color */
   border: none; /* Remove borders */
-  border-radius: 4px; /* Add rounded corners */
+  border-radius: 20px; /* Add rounded corners */
   cursor: pointer;
 }
 
 .prev-page-button:hover,
 .next-page-button:hover {
-  background-color: #a2d0a2; /* Change background color on hover */
+  background-color: #9EB8D9; /* Change background color on hover */
 }
+
+
+.homepage-log-in-section {
+  background-color: #B6BBC4;
+  border-radius: 20px;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+
+}
+
+.homepage-user-greeting {
+  text-align: center;
+  /* margin-top: 20px; */
+}
+
+.homepage-user-greeting h2 {
+  color: #333; /* Adjust color as needed */
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
+.homepage-user-greeting p {
+  color: #666; /* Adjust color as needed */
+  font-size: 20px;
+}
+
+
+
+
+
+
+
+
+
 
 
 /* Search Component */
@@ -129,22 +164,24 @@
   /* Styles for the input field */
   padding: 8px;
   margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
 }
 
 .search-button {
   /* Styles for the button */
+  /* margin-top: 20px; */
+  /* margin-bottom: 20px; */
   padding: 10px 15px;
-  background-color: #75787c;
+  background-color: #67729D;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
 }
 
 .search-button:hover {
-  background-color: #a6a7a8;
+  background-color: #9EB8D9;
 }
 
 
@@ -449,7 +486,7 @@
   margin: 0 auto;
   text-align: center;
   background-color: #f4f4f4;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -466,7 +503,7 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 14px;
+  font-size: 16px;
   resize: none; /* Optional: prevents resizing of the textarea */
 }
 
@@ -489,6 +526,22 @@
   margin-right: 20px; /* Space between picture and details */
 }
 
+.profile-edit-button {
+  padding: 8px 12px; /* Adds padding inside the button */
+  background-color: #7d7e81; /* Sets a primary color */
+  color: white; /* Text color */
+  border: none; /* Removes the border */
+  border-radius: 20px; /* Rounds the corners */
+  cursor: pointer; /* Changes the cursor on hover */
+  font-size: 15px; /* Sets a comfortable font size */
+  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
+}
+
+.profile-edit-button:hover {
+  background-color: #bbbfc2; /* Darkens the button on hover */
+}
+
+
 
 
 .profile-hint {
@@ -496,7 +549,19 @@
   font-size: 24px;
   margin-top: 50px;
   margin-bottom: 30px;
+  color: #445D48;
 }
+
+
+.profile-text-display-section {
+  background-color: #B6BBC4;
+  border-radius: 20px;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+
 
 .profile-popup-overlay {
   position: fixed;
@@ -513,79 +578,34 @@
 .profile-popup-content {
   background-color: white;
   padding: 20px;
-  border-radius: 5px;
-}
-
-.profile-edit-button {
-  padding: 8px 12px; /* Adds padding inside the button */
-  background-color: #7d7e81; /* Sets a primary color */
-  color: white; /* Text color */
-  border: none; /* Removes the border */
-  border-radius: 20px; /* Rounds the corners */
-  cursor: pointer; /* Changes the cursor on hover */
-  font-size: 16px; /* Sets a comfortable font size */
-  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
-}
-
-.profile-edit-button:hover {
-  background-color: #bbbfc2; /* Darkens the button on hover */
-}
-
-
-
-.profile-movie-collection-shelf {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center the items vertically */
-  gap: 30px;
-}
-
-.profile-movie-item {
-  background-color: #f0f0f0;
   border-radius: 20px;
-  padding: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-  width: 60%; /* Adjust the width as needed */
-  max-width: 800px; /* Maximum width */
-  margin: 0 auto; /* Center the item horizontally */
-  color: #333; /* Dark color for title */
-  font-size: 18px; /* Slightly larger font for title */
-  font-weight: bold; /* Bold font for title */
-  
 }
 
-
-.profile-movie-item:hover {
-  transform: translateY(-5px); /* Slight lift effect on hover */
+.profile-popup-content input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px; /* Space between input and buttons */
 }
 
-
-.profile-movie-title {
-  text-decoration: none; /* Remove underline from link */
-  color: #cf572f; /* Hyperlink color */
-  cursor: pointer; /* Change cursor to indicate it's clickable */
-  display: block; 
-  margin-bottom: 10px;
-  text-align: center; /* Center the title */
+.profile-popup-content button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #6c757d;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  margin-right: 10px; /* Space between buttons */
 }
 
-.profile-movie-title:hover {
-  text-decoration: none; /* Ensure no underline on hover */
-  color: #9d4c34; /* Different color on hover */
+.profile-popup-content button:hover {
+  background-color: #999ea0;
 }
 
-.profile-time {
-  font-size: 14px; /* Smaller font size */
-  font-style: italic; /* Italic font style */
-  text-align: center; /* Center the time text */
-  margin-bottom: 10px; /* Space between time and rating/review */
-}
-
-.profile-movie-rating-and-review {
-  color: #666; /* Dark grey color for text */
-  margin: 5px 0; /* Spacing between lines */
-}
 
 .profile-no-movie-hints {
   text-align: center; /* Center text horizontally */
@@ -595,5 +615,54 @@
   color: #666; /* Optional: Adjust text color */
 }
 
+ 
+/* TextDisplay for ProfilePage and HomePage */
+
+.text-display-movie-item {
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  width: 60%; /* Adjust the width as needed */
+  max-width: 800px; /* Maximum width */
+  margin: 25px auto; /* Center the item horizontally */
+  color: #333; /* Dark color for title */
+  font-size: 18px; /* Slightly larger font for title */
+  font-weight: bold; /* Bold font for title */
+  
+}
+
+
+.text-display-movie-item:hover {
+  transform: translateY(-5px); /* Slight lift effect on hover */
+}
+
+
+.text-display-movie-title {
+  text-decoration: none; /* Remove underline from link */
+  color: #2D9596; /* Hyperlink color */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+  display: block; 
+  margin-bottom: 10px;
+  text-align: center; /* Center the title */
+}
+
+.text-display-movie-title:hover {
+  text-decoration: none; /* Ensure no underline on hover */
+  color: #9AD0C2; /* Different color on hover */
+}
+
+.text-display-time {
+  font-size: 14px; /* Smaller font size */
+  font-style: italic; /* Italic font style */
+  text-align: center; /* Center the time text */
+  margin-bottom: 10px; /* Space between time and rating/review */
+}
+
+.text-display-movie-rating-and-review {
+  color: #666; /* Dark grey color for text */
+  margin: 5px 0; /* Spacing between lines */
+}
 
 
