@@ -30,8 +30,7 @@ const CollectionDisplay = ({ collectionData, setCollectionData }) => {
       try {
         const token = await getAccessTokenSilently();
         // update movie rating and review, we only need apiId, rating and review
-        await axios.put(`http://localhost:8000/api/movie/rate-and-review`, {
-          apiId: parseInt(movieId),
+        await axios.put(`http://localhost:8000/api/movie/rate-and-review/${movieId}`, {
           rating: parseInt(newRating),
           review: newReview
         }, {
