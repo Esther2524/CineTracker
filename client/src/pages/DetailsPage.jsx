@@ -9,6 +9,7 @@ import RatingAndReview from '../components/RatingAndReview';
 import MovieInfo from '../components/MovieInfo';
 
 const DetailsPage = () => {
+  // movieId comes from Route path='/details/:movieId'
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
