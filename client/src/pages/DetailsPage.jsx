@@ -38,8 +38,11 @@ const DetailsPage = () => {
     }
     try {
       const token = await getAccessTokenSilently();
+      // create a new movie with rating and review, we need title and posterPath
       await axios.post(`http://localhost:8000/api/movie/rate-and-review`, {
         apiId: parseInt(movieId), 
+        title: movie.title,
+        posterPath: movie.poster_path,
         rating: parseInt(rating),
         review: review,
       }, {
