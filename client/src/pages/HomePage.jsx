@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0(); // Destructure isAuthenticated
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0(); // Destructure isAuthenticated
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [userMovieCollection, setUserMovieCollection] = useState([]);
