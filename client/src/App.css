@@ -130,25 +130,29 @@
   font-size: 20px;
 }
 
-.user-name-container {
+.user-interaction-container {
   position: relative;
 }
 
 .dropdown-menu {
   position: absolute;
-  top: 110%;
   left: 0;
   background-color: #49486d;
   border: 1px solid #ddd;
   padding: 10px;
   z-index: 1000;
   border-radius: 10px;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .logout-link {
   font-size: 16px;
 }
-
+.user-interaction-container:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
 
 
 
