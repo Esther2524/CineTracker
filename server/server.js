@@ -174,9 +174,16 @@ app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
 
     // Upsert the movie with rating and review
     const movie = await prisma.movie.upsert({
-      where: { apiId: apiId },
+      where: {
+        // different users to rate and review the same movie independently
+        userId_apiId: {
+          userId: user.id,
+          apiId: apiId
+        }
+      },
       update: { rating: rating, review: review },
       create: {
+        userId: user.id,
         apiId: apiId,
         title: title,
         posterPath: posterPath,
@@ -185,6 +192,7 @@ app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
         collectionId: collectionId
       },
     });
+
 
     res.json(movie);
   } catch (error) {
@@ -210,6 +218,7 @@ app.put('/api/movie/rate-and-review/:apiId', jwtCheck, async (req, res) => {
 
     const movie = await prisma.movie.updateMany({
       where: {
+        userId: user.id,
         apiId: parseInt(apiId),
         collectionId: collectionId
       },
@@ -239,7 +248,9 @@ app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
 
     // Find the user
     const user = await prisma.user.findUnique({
-      where: { auth0Id: auth0Id },
+      where: { 
+        auth0Id: auth0Id 
+      },
       include: {
         collection: true
       }
@@ -250,6 +261,7 @@ app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
       await prisma.movie.deleteMany({
         where: {
           apiId: parseInt(apiId),
+          userId: user.id,
           collectionId: user.collection.id
         }
       });
@@ -263,6 +275,33 @@ app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+// 8. get all movies' rating and review from all users in the database
+// fetch both movie details and associated user information from your database
+// different users can have the same movie in their collections with different ratings and reviews
+app.get('/api/users-with-movies', jwtCheck, async (req, res) => {
+  try {
+    const usersWithMovies = await prisma.user.findMany({
+      include: {
+        collection: {
+          include: {
+            movies: true // Include all movies within the collection
+          }
+        }
+      }
+    });
+
+    console.log(usersWithMovies);
+    res.json(usersWithMovies);
+  } catch (error) {
+    console.error('Error fetching users and their movies:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
 
 
 
