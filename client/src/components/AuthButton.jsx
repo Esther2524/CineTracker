@@ -22,7 +22,7 @@ const fetchUserData = async (getAccessTokenSilently) => {
 const AuthButton = () => {
   const { user, loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [isHovering, setIsHovering] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState('User');
   useEffect(() => {
     if (isAuthenticated) {
       fetchUserData(getAccessTokenSilently).then(userData => {
@@ -45,10 +45,10 @@ const AuthButton = () => {
         <div 
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
-          className="user-name-container"
+          className="user-interaction-container" // Container for both user name and dropdown
         >
-          {/* Display the fetched name, not from Auth0. if cannot fetch name from database, then use auth0's user name */}
           <span className="user-name">{userName || user.name}</span> 
+
           {isHovering && (
             <div className="dropdown-menu">
               <span 
