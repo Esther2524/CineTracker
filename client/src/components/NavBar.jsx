@@ -1,63 +1,72 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AuthButton from "./AuthButton";
-import { Menu } from "semantic-ui-react";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { useAuth0 } from '@auth0/auth0-react';
 
 export const NavBar = () => {
-    const { isAuthenticated, loginWithRedirect } = useAuth0();
-    // const navigate = useNavigate();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const sidebarRef = useRef(); // Create a ref for the sidebar
 
-    const handleProtectedItemClick = (e) => {
-        if (!isAuthenticated) {
-            // Prevent default link behavior
-            e.preventDefault();
-            loginWithRedirect(); 
-        }
+  const handleProtectedItemClick = (e, path) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      loginWithRedirect({ appState: { returnTo: path } });
+    }
+    setSidebarVisible(false); // Close the sidebar after navigating
+  };
+
+  const handleClickOutside = (event) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      setSidebarVisible(false); // Close the sidebar if clicked outside
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
     };
+  }, []);
 
-    return (
-        <Menu fixed="top" size="huge">
-            <Menu.Item as={Link} to="/" style={{ fontSize: "1.5rem" }}> 
-                Home 
-            </Menu.Item>
+  const toggleSidebar = () => {
+    setSidebarVisible(!sidebarVisible); // Toggle the sidebar visibility
+  };
 
-            <Menu.Item 
-                as={Link} 
-                to="/collections" 
-                style={{ fontSize: "1.5rem" }} 
-                onClick={handleProtectedItemClick}
-            > 
-                My Collection 
-            </Menu.Item>
+  return (
+    <>
+      <div className="navbar">
+        
+        <div className="navbar-icon" onClick={toggleSidebar} alt="Sidebar Icon">
+          ☰
+        </div>
 
-            <Menu.Item 
-                as={Link} 
-                to="/profile" 
-                style={{ fontSize: "1.5rem" }} 
-                onClick={handleProtectedItemClick}
-            > 
-                Profile 
-            </Menu.Item>
+        <div className="navbar-right">
+          <AuthButton />
+        </div>
 
-            <Menu.Item 
-                as={Link} 
-                to="/auth-debugger" 
-                style={{ fontSize: "1.5rem" }} 
-                onClick={handleProtectedItemClick}
-            > 
-                Auth Debugger 
-            </Menu.Item>
+      </div>
 
+      <div ref={sidebarRef} className={`sidebar ${sidebarVisible ? 'sidebar-visible' : ''}`}>
+        <Link to="/" className="sidebar-item" onClick={() => handleProtectedItemClick(null, '/')}>
+          Home
+        </Link>
+        <Link to="/collections" className="sidebar-item" onClick={(e) => handleProtectedItemClick(e, '/collections')}>
+          My Collection
+        </Link>
+        <Link to="/profile" className="sidebar-item" onClick={(e) => handleProtectedItemClick(e, '/profile')}>
+          Profile
+        </Link>
+        <Link to="/auth-debugger" className="sidebar-item" onClick={(e) => handleProtectedItemClick(e, '/auth-debugger')}>
+          Auth Debugger
+        </Link>
+      </div>
 
-            <Menu.Menu position="right">
-                <Menu.Item style={{ fontSize: "1.5rem" }}> 
-                    <AuthButton />
-                </Menu.Item>
-            </Menu.Menu>
-
-            
-
-        </Menu>
-    );
+      {/* Overlay element */}
+      {sidebarVisible && <div className="overlay" onClick={toggleSidebar}></div>}
+    </>
+  );
 };
+
+export default NavBar;
