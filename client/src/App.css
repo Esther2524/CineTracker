@@ -1,3 +1,113 @@
+/* General styles for Navbar and Sidebar */
+
+/* Overlay Styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0); /* Initially fully transparent */
+  z-index: 900;
+  transition: background-color 0.5s ease; /* Same duration as sidebar animation */
+  pointer-events: none; /* Initially, don't capture clicks */
+  opacity: 0; /* Start with hidden */
+}
+
+
+/* When sidebar is visible, make overlay active */
+.sidebar-visible ~ .overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  pointer-events: all; /* Now capture clicks */
+  opacity: 1; /* Make visible */
+}
+
+
+/* NavBar */
+.navbar {
+  background-color: #838baf; /* Dark blue background */
+  color: #ECF0F1; /* Light text */
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+
+
+.navbar-icon {
+  display: flex;
+  align-items: center; /* Vertically centers the child elements */
+  justify-content: center; /* Horizontally centers the child elements */
+  cursor: pointer;
+  font-size: 35px; /* Adjust as needed */
+  user-select: none; /* Prevent text selection */
+  margin-bottom: 10px;
+}
+
+
+
+.navbar-icon:hover {
+  background-color: #31304D; /* Darken button on hover */
+  border-radius: 10px;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #49486d; /* Darker shade for the sidebar */
+  color: white;
+  position: fixed;
+  top: 0;
+  left: -250px; /* Start off-screen */
+  width: 250px;
+  height: 100%;
+  z-index: 999;
+  padding-top: 60px;
+  overflow-y: auto; /* Enable scrolling for long sidebars */
+  transition: left 0.5s ease; /* Smooth transition for the 'left' property */
+}
+
+/* When sidebar is visible */
+.sidebar-visible {
+  left: 0; /* Move sidebar into view */
+}
+
+.sidebar-item {
+  padding: 18px 22px;
+  text-decoration: none;
+  color: white;
+  display: block;
+  transition: background-color 0.3s, padding-left 0.3s;
+}
+
+.sidebar-item:hover {
+  background-color: #838baf; /* Lighter shade on hover */
+  padding-left: 25px; /* Indent text on hover */
+  color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* App.css */
 .content-container {
   margin-top: 70px; /* Adjust the value based on your NavBar's height */
@@ -13,10 +123,11 @@
 
 
 
-/* App.css */
+/* NavBar user name */
 
-.login-link, .logout-link, .user-name {
+.login-link, .user-name {
   cursor: pointer;
+  font-size: 20px;
 }
 
 .user-name-container {
@@ -27,15 +138,19 @@
   position: absolute;
   top: 110%;
   left: 0;
-  background-color: rgb(197, 190, 190);
+  background-color: #49486d;
   border: 1px solid #ddd;
-  padding: 5px;
+  padding: 10px;
   z-index: 1000;
+  border-radius: 10px;
 }
 
 .logout-link {
-  font-size: 0.7em;
+  font-size: 16px;
 }
+
+
+
 
 
 /* HomePage - ColumnDisplay component */
@@ -47,7 +162,7 @@
 }
 
 .column-movie-card {
-  width: calc(20% - 20px); /* Adjust width for 5 cards per row minus gap */
+  width: calc(20% - 20px); /* 5 cards per row minus gap for desktop */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 15px;
   text-align: center;
@@ -338,7 +453,7 @@
 
 .collection-poster {
   flex: 1; /* Assigns equal width to both the poster and text if possible */
-  max-width: 250px; /* Adjust this value based on your preference */
+  max-width: 250px; 
 }
 
 .collection-poster img {
@@ -666,3 +781,153 @@
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Existing styles remain unchanged */
+
+/* Responsive adjustments for tablets */
+@media screen and (max-width: 768px) {
+
+
+  .profile-user-info-container, .collection-movie-item, .text-display-movie-item {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .collection-poster img, .details-movie-poster img {
+    width: 100%;
+  }
+
+  .details-page-container {
+    flex-direction: column;
+  }
+
+  .column-movie-card {
+    width: calc(33% - 20px); /* 3 cards per row */
+  }
+
+  .profile-popup-content, .collection-popup-content {
+    width: 80%;
+  }
+}
+
+
+
+
+
+
+
+
+/* Responsive adjustments for mobile phones */
+@media screen and (max-width: 480px) {
+  .sidebar {
+    width: 40%; 
+  }
+
+  .column-movie-card {
+    width: calc(50% - 20px); /* 2 cards per row */
+  }
+
+  /* Search form adjustments */
+  .search-form {
+    flex-direction: column; /* Stack input and button vertically */
+    align-items: center;
+  }
+
+  .search-input {
+    width: 60%; /* Reduce width to fit screen */
+    margin-bottom: 10px; /* Add space between input and button */
+  }
+
+  .search-button {
+    width: 30%; /* Reduce button width */
+  }
+
+  .profile-popup-content, .collection-popup-content {
+    width: 90%;
+  }
+
+  .details-page-container,
+  .rating-review-form,
+  .details-movie-info,
+  .submit-button-container {
+    flex-direction: column;
+  }
+
+  .details-movie-poster,
+  .details-movie-info {
+    width: 100%;
+  }
+
+  .submit-button {
+    width: 100%;
+  }
+
+  .text-display-movie-item {
+    width: 80%;
+  }
+}
+
+
+
+
+
+
+/* Adjustments for typography on smaller screens */
+@media screen and (max-width: 480px) {
+  .sidebar {
+    /* change the sidebar width */
+    width: 40%; 
+  }
+
+
+  body {
+    font-size: 14px;
+  }
+
+  .center-title, .homepage-user-greeting h2, .details-movie-info h1 {
+    font-size: 24px;
+  }
+
+  .profile-popup-content button, .collection-popup-content button {
+    font-size: 12px;
+  }
+
+  .text-display-movie-item {
+    width: 80%;
+  }
+}
+
+/* Additional styles to prevent unintentional wrapping */
+* {
+  box-sizing: border-box;
+}
+
+/* Ensuring no unintentional scrollbars */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensuring embedded scrollbars are used only when necessary */
+.long-content-section {
+  overflow: auto; /* Use only for long content sections */
+}
