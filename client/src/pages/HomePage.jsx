@@ -3,9 +3,9 @@ import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react'; //
 import CardDisplay from '../components/CardDisplay';
-import TextDisplay from '../components/TextDisplay';
 import fetchPopularMovies from '../externalAPI/fetchPopularMovies';
 import axios from 'axios';
+import HomePageTextDisplay from '../components/HomePageTextDisplay';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -24,16 +24,16 @@ const HomePage = () => {
       if (isAuthenticated) {
         try {
           const token = await getAccessTokenSilently();
-          const response = await axios.get('http://localhost:8000/api/user/collection', {
+          const response = await axios.get('http://localhost:8000/api/users-with-movies', {
             headers: { Authorization: `Bearer ${token}` }
           });
 
           // sort in chronological order,
-          const sortedCollection = response.data.sort((a, b) => {
-            return new Date(b.updatedAt) - new Date(a.updatedAt); // Sorts in descending order
-          });
-
-          setUserMovieCollection(sortedCollection);
+          // const sortedCollection = response.data.sort((a, b) => {
+          //   return new Date(b.updatedAt) - new Date(a.updatedAt); // Sorts in descending order
+          // });
+          // Assuming the data structure is an array of users, each with a movie collection
+          setUserMovieCollection(response.data);
 
         } catch (error) {
           console.error('Error fetching user movies:', error);
@@ -98,6 +98,8 @@ const HomePage = () => {
           </div>
         </div>
       )}
+
+
       <div className='homepage-log-in-section'>
         {/* Display Greeting for Logged-in Users */}
         {isAuthenticated && (
@@ -108,9 +110,17 @@ const HomePage = () => {
         )}
 
         {/* Display TextDisplay for logged-in users */}
-        {isAuthenticated && userMovieCollection.map((movie) => (
-          <TextDisplay key={movie.apiId} movie={movie} formatDate={formatDate} />
-        ))}
+        {isAuthenticated && userMovieCollection.map(user =>
+          user.collection.movies.map(movie =>
+            <HomePageTextDisplay
+              key={`${user.id}-${movie.id}`}
+              movie={movie}
+              user={user}
+              formatDate={formatDate}
+            />
+          )
+        )}
+
 
       </div>
 
