@@ -3,12 +3,14 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-  relationMode = "prisma"
+  // relationMode = "prisma"
+  referentialIntegrity = "prisma"
 }
 
 
@@ -31,14 +33,18 @@ model Collection {
 }
 
 
+
 model Movie {
   id           Int      @id @default(autoincrement())
-  apiId        Int      @unique // use this id to fetch data from external api
+  apiId        Int      // No longer unique
+  userId       Int      // Foreign key to User
   title        String
   posterPath   String
   rating       Int?
   review       String?
   updatedAt    DateTime @updatedAt
-  collectionId Int
   collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId Int
+
+  @@unique([userId, apiId])
 }
