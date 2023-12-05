@@ -33,32 +33,44 @@ app.get('/ping', (req, res) => {
 // enforce on all endpoints
 // app.use(jwtCheck);
 
-// 1. sync the user and the collection
+// 1. create new user
 app.post('/api/user/collection/sync', jwtCheck, async (req, res) => {
   try {
     const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
     const { email, name, picture } = req.body;
 
-    // Upsert user data into the database
-    const user = await prisma.user.upsert({
-      where: { email: email }, // email is a unique field
-      // It updates the user's name and picture fields with the new values provided in the request.
-      update: { name: name, picture: picture },
-      // creates a new user record with the provided email and name.
-      create: { auth0Id: auth0Id, email: email, name: name, picture: picture },
+    // Check if the user already exists
+    let user = await prisma.user.findUnique({
+      where: { auth0Id: auth0Id },
     });
 
-    // Create a collection for the user if it doesn't exist
-    let collection = await prisma.collection.findUnique({
-      where: { userId: user.id },
-    });
+    let collection;
 
-    if (!collection) {
+    console.log(user);
+
+    if (!user) {
+      // If the user doesn't exist, create them
+      user = await prisma.user.create({
+        data: {
+          auth0Id: auth0Id,
+          email: email,
+          name: name,
+          picture: picture,
+        },
+      });
+
+      // Create a collection for the new user
       collection = await prisma.collection.create({
         data: { userId: user.id },
       });
+    } else {
+      // If the user exists, fetch their collection
+      collection = await prisma.collection.findUnique({
+        where: { userId: user.id },
+      });
     }
 
+    // Send the user and their collection as response
     res.json({ user, collection });
   } catch (error) {
     console.error('Error syncing user and collection data:', error);
@@ -77,12 +89,15 @@ app.get('/api/user', jwtCheck, async (req, res) => {
       where: { auth0Id: auth0Id }
     });
 
+
+
     if (user) {
       res.json(user);
-      // console.log("user exists")
-    } else {
-      res.status(404).send('User not found');
-    }
+    } 
+    
+    // else {
+    //   res.status(404).send('User not found');
+    // }
   } catch (error) {
     console.error('Error fetching user data:', error);
     res.status(500).send('Internal Server Error');
@@ -248,8 +263,8 @@ app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
 
     // Find the user
     const user = await prisma.user.findUnique({
-      where: { 
-        auth0Id: auth0Id 
+      where: {
+        auth0Id: auth0Id
       },
       include: {
         collection: true
@@ -280,7 +295,7 @@ app.delete('/api/movie/:apiId', jwtCheck, async (req, res) => {
 // 8. get all movies' rating and review from all users in the database
 // fetch both movie details and associated user information from your database
 // different users can have the same movie in their collections with different ratings and reviews
-app.get('/api/users-with-movies', jwtCheck, async (req, res) => {
+app.get('/api/users-with-movies', async (req, res) => {
   try {
     const usersWithMovies = await prisma.user.findMany({
       include: {
