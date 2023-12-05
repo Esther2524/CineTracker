@@ -21,27 +21,24 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchUserMovies = async () => {
-      if (isAuthenticated) {
-        try {
-          const token = await getAccessTokenSilently();
-          const response = await axios.get('http://localhost:8080/api/users-with-movies', {
-            headers: { Authorization: `Bearer ${token}` }
-          });
 
-          // Flatten and sort the movie collection in chronological order
-          const allMovies = response.data
-            .flatMap(user =>
-              user.collection ?
-                user.collection.movies.map(movie => ({ ...movie, user })) : []
-            )
-            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users-with-movies`);
 
-          setUserMovieCollection(allMovies);
+        // Flatten and sort the movie collection in chronological order
+        const allMovies = response.data
+          .flatMap(user =>
+            user.collection ?
+              user.collection.movies.map(movie => ({ ...movie, user })) : []
+          )
+          .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
 
-        } catch (error) {
-          console.error('Error fetching user movies:', error);
-        }
+        setUserMovieCollection(allMovies);
+
+      } catch (error) {
+        console.error('Error fetching user movies:', error);
       }
+
     };
 
     fetchUserMovies();
@@ -102,28 +99,44 @@ const HomePage = () => {
         </div>
       )}
 
-
       <div className='homepage-log-in-section'>
-        {/* Display Greeting for Logged-in Users */}
-        {isAuthenticated && (
-          <div className="homepage-user-greeting">
-            <h2>Welcome back!💫</h2>
-            <p>Come and take a look at what other people are thinking 🤔...</p>
-          </div>
+        {isAuthenticated ? (
+          <>
+            {/* Display Greeting for Logged-in Users */}
+            <div className="homepage-user-greeting">
+              <h2>Welcome Back to the Movie Buffs' Hub! 🎬✨</h2>
+              <p>See what other cinephiles are saying 🤔...</p>
+            </div>
+
+            {/* Display TextDisplay for logged-in users */}
+            {userMovieCollection.map(movie =>
+              <HomePageTextDisplay
+                key={`${movie.user.id}-${movie.id}`}
+                movie={movie}
+                user={movie.user}
+                formatDate={formatDate}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            {/* Display hint for users to log in */}
+            <div className="homepage-user-greeting">
+              <h2>Join the Community! 🌟</h2>
+              <p>Log in to see more movie ratings and reviews from other cinephiles!</p>
+            </div>
+
+            {/* Display the latest three HomePageTextDisplay components for non-logged-in users */}
+            {userMovieCollection.slice(0, 3).map(movie =>
+              <HomePageTextDisplay
+                key={`${movie.user.id}-${movie.id}`}
+                movie={movie}
+                user={movie.user}
+                formatDate={formatDate}
+              />
+            )}
+          </>
         )}
-
-        {/* Display TextDisplay for logged-in users */}
-        {isAuthenticated && userMovieCollection.map(movie =>
-          <HomePageTextDisplay
-            key={`${movie.user.id}-${movie.id}`}
-            movie={movie}
-            user={movie.user} // As each movie now includes its user
-            formatDate={formatDate}
-          />
-        )}
-
-
-
       </div>
 
 
