@@ -34,7 +34,7 @@ const CollectionDisplay = ({ collectionData, setCollectionData }) => {
       const token = await getAccessTokenSilently();
 
       // Assuming the backend expects the movie ID as part of the URL
-      await axios.put(`http://localhost:8000/api/movie/rate-and-review/${currentEditingMovie.apiId}`, {
+      await axios.put(`http://localhost:8080/api/movie/rate-and-review/${currentEditingMovie.apiId}`, {
         rating: parseInt(editedData.rating),
         review: editedData.review
       }, {
