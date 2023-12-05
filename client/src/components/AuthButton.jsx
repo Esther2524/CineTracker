@@ -14,22 +14,34 @@ const fetchUserData = async (getAccessTokenSilently) => {
     });
     return response.data; // the user data including the name
   } catch (error) {
-    console.error('Error fetching user data:', error);
     return null;
   }
 };
+
 
 const AuthButton = () => {
   const { user, loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [isHovering, setIsHovering] = useState(false);
   const [userName, setUserName] = useState('User');
+
+
   useEffect(() => {
+    const fetchAndSetUserData = async () => {
+      const userData = await fetchUserData(getAccessTokenSilently);
+      if (userData) {
+        setUserName(userData.name);
+      } else {
+        // Retry fetching user data after a delay
+        setTimeout(() => fetchUserData(getAccessTokenSilently).then(userData => {
+          if (userData) {
+            setUserName(userData.name);
+          }
+        }), 2000); // Adjust delay as needed
+      }
+    };
+
     if (isAuthenticated) {
-      fetchUserData(getAccessTokenSilently).then(userData => {
-        if (userData) {
-          setUserName(userData.name); // Set the name from the database
-        }
-      });
+      fetchAndSetUserData();
     }
   }, [isAuthenticated, getAccessTokenSilently]);
 
