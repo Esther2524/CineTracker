@@ -19,7 +19,7 @@ const CollectionPage = () => {
 
         try {
           const token = await getAccessTokenSilently();
-          const response = await axios.get('http://localhost:8000/api/user/collection', {
+          const response = await axios.get('http://localhost:8080/api/user/collection', {
             headers: {
               Authorization: `Bearer ${token}`
             }

@@ -17,13 +17,13 @@ const ProfilePage = () => {
 				try {
 					const token = await getAccessTokenSilently();
 					// get user info from backend
-					const userResponse = await axios.get('http://localhost:8000/api/user', {
+					const userResponse = await axios.get('http://localhost:8080/api/user', {
 						headers: { Authorization: `Bearer ${token}` }
 					});
 					setUserData(userResponse.data);
 
 					// get movie info from backend and sort by updatedAt
-					const collectionResponse = await axios.get('http://localhost:8000/api/user/collection', {
+					const collectionResponse = await axios.get('http://localhost:8080/api/user/collection', {
 						headers: { Authorization: `Bearer ${token}` }
 					});
 
@@ -47,7 +47,7 @@ const ProfilePage = () => {
 	const handleSaveNewName = async () => {
 		try {
 			const token = await getAccessTokenSilently();
-			await axios.put('http://localhost:8000/api/user', { newName }, {
+			await axios.put('http://localhost:8080/api/user', { newName }, {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 			setUserData({ ...userData, name: newName });

@@ -18,7 +18,7 @@ const AuthPage = () => {
             const token = await getAccessTokenSilently();
             const userData = { email: user.email, name: user.name, picture: user.picture };
             // handle the creation of the user and their collection at the same time
-            await axios.post('http://localhost:8000/api/user/collection/sync', userData, {
+            await axios.post('http://localhost:8080/api/user/collection/sync', userData, {
               headers: {
                   Authorization: `Bearer ${token}`
               }

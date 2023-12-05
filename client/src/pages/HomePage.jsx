@@ -24,7 +24,7 @@ const HomePage = () => {
       if (isAuthenticated) {
         try {
           const token = await getAccessTokenSilently();
-          const response = await axios.get('http://localhost:8000/api/users-with-movies', {
+          const response = await axios.get('http://localhost:8080/api/users-with-movies', {
             headers: { Authorization: `Bearer ${token}` }
           });
 
