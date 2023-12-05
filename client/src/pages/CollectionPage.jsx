@@ -8,7 +8,7 @@ const CollectionPage = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const [collectionData, setCollectionData] = useState([]);
   const [loadingUserData, setLoadingUserData] = useState(true); // Define the loadingUserData state
-  
+
   // The useEffect hook fetches data from the backend 
   // and then enriches each movie with additional details from the external API using apiID we shored in database
   // from backend: rating and review
@@ -60,11 +60,14 @@ const CollectionPage = () => {
       {collectionData && collectionData.length > 0 ? (
         <CollectionDisplay collectionData={collectionData} setCollectionData={setCollectionData} />
       ) : (
-        <p>No movies in your collection.</p>
+        <h2 className='center-title'>
+          No movies? Quick, grab some on the HomePage! 😉
+        </h2>
+
       )}
     </div>
   );
-  
+
 };
 
 export default CollectionPage;

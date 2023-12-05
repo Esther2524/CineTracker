@@ -105,7 +105,7 @@ const HomePage = () => {
             {/* Display Greeting for Logged-in Users */}
             <div className="homepage-user-greeting">
               <h2>Welcome Back to the Movie Buffs' Hub! 🎬✨</h2>
-              <p>See what other cinephiles are saying 🤔...</p>
+              <p>Come and see what other people are saying 🤔...</p>
             </div>
 
             {/* Display TextDisplay for logged-in users */}
