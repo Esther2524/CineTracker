@@ -177,7 +177,7 @@ app.get('/api/user/collection', jwtCheck, async (req, res) => {
 app.post('/api/movie/rate-and-review', jwtCheck, async (req, res) => {
   try {
 
-    const { apiId, title, posterPath, rating, review } = req.body; // Include userEmail in the request body
+    const { apiId, title, posterPath, rating, review } = req.body; 
     const auth0Id = req.auth.payload.sub; // Extract auth0Id from the token
 
     const user = await prisma.user.findUnique({
