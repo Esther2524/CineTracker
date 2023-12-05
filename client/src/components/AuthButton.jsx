@@ -7,7 +7,7 @@ import axios from 'axios';
 const fetchUserData = async (getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently();
-    const response = await axios.get('http://localhost:8080/api/user', {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/user`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
