@@ -1,5 +1,4 @@
-// VerifyUserPage.jsx
-// The useEffect in VerifyUser is dependent on the isAuthenticated state. 
+// The useEffect in AuthPage is dependent on the isAuthenticated state. 
 // Once Auth0 sets this state to true, indicating that the user is authenticated, 
 // the component redirects to the home page.
 import { useEffect } from 'react';
@@ -23,6 +22,8 @@ const AuthPage = () => {
                   Authorization: `Bearer ${token}`
               }
             });
+            // Make sure that the navigation to the homepage (navigate('/')) occurs only after the user data has been successfully posted to the backend and a response has been received. 
+            navigate('/'); // Move navigation here
           } catch (error) {
             console.error('Error sending user data to backend:', error);
           }
@@ -31,12 +32,11 @@ const AuthPage = () => {
 
       if (isAuthenticated) {
         sendUserDataToBackend();
-        navigate('/');
       }
     }, [isAuthenticated, user, getAccessTokenSilently, navigate]);
 
     return (
-      <div>Verifying user...</div>
+      <div><h2 className='center-title'>Verifying user 🫡...</h2></div>
     );
 };
 
