@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("dev"));
 
-const PORT = 8000;
+const PORT = parseInt(process.env.PORT) || 8080;
 
 const { PrismaClient } = pkg;
 const prisma = new PrismaClient();
