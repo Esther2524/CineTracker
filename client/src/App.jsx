@@ -1,6 +1,4 @@
 import './App.css';
-import axios from 'axios';
-
 import { useAuth0 } from '@auth0/auth0-react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { NavBar } from './components/NavBar';
@@ -13,6 +11,7 @@ import DetailsPage from './pages/DetailsPage';
 import SearchResultPage from './pages/SearchResultPage';
 import ProfilePage from './pages/ProfilePage';
 import CollectionPage from './pages/CollectionPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 
 const queryClient = new QueryClient();
@@ -22,12 +21,7 @@ function App() {
 
 
   const {
-    loginWithPopup,
-    loginWithRedirect,
-    logout,
-    user,
     isAuthenticated,
-    getAccessTokenSilently // the access token will be used in the backend
   } = useAuth0();
 
   // Since the roles are in the ID token, we can check the `user` object for the 'Admin' role
@@ -53,6 +47,9 @@ function App() {
               {isAuthenticated && <Route path="/profile" element={<ProfilePage />} />}
               {isAuthenticated && <Route path="/collections" element={<CollectionPage />} />}
               {isAuthenticated && <Route path="/auth-debugger" element={<AuthDebuggerPage />} />}
+
+              {/* 404 Not Found Route */}
+              <Route path="*" element={<NotFoundPage />} />
 
             </Routes>
           </div>
