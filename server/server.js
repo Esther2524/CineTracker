@@ -292,7 +292,7 @@ app.get('/api/users-with-movies', jwtCheck, async (req, res) => {
       }
     });
 
-    console.log(usersWithMovies);
+    // console.log(usersWithMovies);
     res.json(usersWithMovies);
   } catch (error) {
     console.error('Error fetching users and their movies:', error);
