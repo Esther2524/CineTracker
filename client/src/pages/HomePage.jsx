@@ -28,12 +28,15 @@ const HomePage = () => {
             headers: { Authorization: `Bearer ${token}` }
           });
 
-          // sort in chronological order,
-          // const sortedCollection = response.data.sort((a, b) => {
-          //   return new Date(b.updatedAt) - new Date(a.updatedAt); // Sorts in descending order
-          // });
-          // Assuming the data structure is an array of users, each with a movie collection
-          setUserMovieCollection(response.data);
+          // Flatten and sort the movie collection in chronological order
+          const allMovies = response.data
+            .flatMap(user =>
+              user.collection ?
+                user.collection.movies.map(movie => ({ ...movie, user })) : []
+            )
+            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+          setUserMovieCollection(allMovies);
 
         } catch (error) {
           console.error('Error fetching user movies:', error);
@@ -104,22 +107,21 @@ const HomePage = () => {
         {/* Display Greeting for Logged-in Users */}
         {isAuthenticated && (
           <div className="homepage-user-greeting">
-            <h2>Welcome back!</h2>
-            <p>Here are your collected movies:</p>
+            <h2>Welcome back!💫</h2>
+            <p>Come and take a look at what other people are thinking 🤔...</p>
           </div>
         )}
 
         {/* Display TextDisplay for logged-in users */}
-        {isAuthenticated && userMovieCollection.map(user =>
-          user.collection.movies.map(movie =>
-            <HomePageTextDisplay
-              key={`${user.id}-${movie.id}`}
-              movie={movie}
-              user={user}
-              formatDate={formatDate}
-            />
-          )
+        {isAuthenticated && userMovieCollection.map(movie =>
+          <HomePageTextDisplay
+            key={`${movie.user.id}-${movie.id}`}
+            movie={movie}
+            user={movie.user} // As each movie now includes its user
+            formatDate={formatDate}
+          />
         )}
+
 
 
       </div>
