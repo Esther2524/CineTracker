@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const fetchMoviesByName = async (name, page) => {
 
-    console.log(name);
+    // console.log(name);
     const url = `https://api.themoviedb.org/3/search/movie?query=${name}&include_adult=false&language=en-US&page=${page}`;
     const options = {
         method: 'GET',
