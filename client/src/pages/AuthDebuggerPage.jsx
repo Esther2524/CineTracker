@@ -26,7 +26,7 @@ const AuthDebuggerPage = () => {
 
     return (
         <div>
-            <h2 className="center-title">Auth Token Debugger Page</h2>
+            <h2 className="center-title">Auth Token Debugger Page🙈</h2>
             <div className='debugger-page'>
                 <h3>This page displays your current authentication token</h3>
                 {token ? (
