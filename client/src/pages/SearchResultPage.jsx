@@ -32,7 +32,7 @@ const SearchResultPage = () => {
 
     return (
         <div>
-            <h1 className="center-title">Search Results for "{searchTerm}"</h1>
+            <h1 className="center-title">Search Results for "{searchTerm}" 🔍</h1>
             <CardDisplay data={data?.results} onMovieSelect={handleMovieSelect} />
             <div className="pagination-container">
                 <button className="prev-page-button" onClick={handlePrevPage} disabled={currentPage === 1}>

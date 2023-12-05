@@ -73,7 +73,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 className="center-title">Popular Movies</h1>
+      <h1 className="center-title">Popular Movies🔥</h1>
       <form onSubmit={handleSearch} className="search-form">
         <input
           type="text"

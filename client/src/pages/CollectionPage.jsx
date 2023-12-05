@@ -56,7 +56,7 @@ const CollectionPage = () => {
 
   return (
     <div className="collection-page">
-      <h1 className="center-title">Collection Page</h1>
+      <h1 className="center-title">Collection Page📚</h1>
       {collectionData && collectionData.length > 0 ? (
         <CollectionDisplay collectionData={collectionData} setCollectionData={setCollectionData} />
       ) : (

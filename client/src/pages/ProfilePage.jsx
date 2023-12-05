@@ -71,7 +71,7 @@ const ProfilePage = () => {
 
 	return (
 		<div className="profile-page">
-			<h1 className="center-title">Profile Page</h1>
+			<h1 className="center-title">Profile Page😎</h1>
 			{user && (
 				<div className="profile-user-info-container">
 					<img src={userData.picture} alt={userData.name} className='profile-image' />
