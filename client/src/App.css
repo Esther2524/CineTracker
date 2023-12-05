@@ -45,7 +45,7 @@
   align-items: center; /* Vertically centers the child elements */
   justify-content: center; /* Horizontally centers the child elements */
   cursor: pointer;
-  font-size: 35px; /* Adjust as needed */
+  font-size: 35px;
   user-select: none; /* Prevent text selection */
   margin-bottom: 10px;
 }
@@ -110,7 +110,7 @@
 
 /* App.css */
 .content-container {
-  margin-top: 70px; /* Adjust the value based on your NavBar's height */
+  margin-top: 70px; /* NavBar's height */
 }
 
 .center-title {
@@ -188,7 +188,7 @@
 }
 
 .view-detail-button {
-  font-size: 14px; /* Adjust the font size as needed */
+  font-size: 14px; 
   margin: 2px; /* Add some margin for spacing */
   padding: 8px 10px; /* Add padding to make the buttons bigger */
   background-color: #7d7e7f; /* Background color */
@@ -249,13 +249,13 @@
 }
 
 .homepage-user-greeting h2 {
-  color: #333; /* Adjust color as needed */
+  color: #333; 
   margin-bottom: 10px;
   font-size: 30px;
 }
 
 .homepage-user-greeting p {
-  color: #666; /* Adjust color as needed */
+  color: #666; 
   font-size: 20px;
 }
 
@@ -316,21 +316,22 @@
   flex: 1;
   margin-top: 20px;
   margin-left: 20px;
-  width: 60%; /* Adjust as needed */
+  width: 60%; 
 }
 
 .details-movie-poster img {
   width: 100%;
   height: auto;
   border-radius: 15px; /* Rounded corners for the image */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Details Page - Movie Infor */
 .details-right-column {
   flex: 2;
   margin-top: 20px;
-  margin-right: 40px;
+  margin-right: 50px;
+  margin-left: 10px;
   width: 40%;
   display: flex;
   flex-direction: column;
@@ -342,7 +343,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-left: 30px;
+  margin-left: 10px;
+  margin-right: 40px;
 }
 
 .details-movie-info h1 {
@@ -361,7 +363,7 @@
 .details-movie-info p:first-of-type {
   font-style: italic;
   text-align: center;
-  color: #555; /* Optional: change color for the tagline */
+  color: #555; 
 }
 
 /* Details Page - Rating and Review */
@@ -371,13 +373,13 @@
   gap: 20px;
   background: #f2f2f2;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
-  width: 100%;
-  margin-left: 30px;
+  width: 95%;
+  margin-left: 10px;
   margin-top: 10px;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .rating-container,
@@ -432,7 +434,7 @@
   color: white;
   border: none;
   padding: 10px 15px;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -539,7 +541,7 @@
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  width: 350px; /* Adjust width as needed */
+  width: 350px;
   max-width: 90%;
 }
 
@@ -558,7 +560,7 @@
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  box-sizing: border-box; /* Makes sure padding doesn't affect overall width */
+  box-sizing: border-box; 
   font-size: 14px;
 }
 
@@ -623,7 +625,7 @@
   border-radius: 4px;
   font-family: 'Courier New', Courier, monospace;
   font-size: 16px;
-  resize: none; /* Optional: prevents resizing of the textarea */
+  resize: none;
 }
 
 
@@ -730,8 +732,8 @@
   text-align: center; /* Center text horizontally */
   width: 100%; /* Ensure it takes the full width for proper centering */
   margin-top: 20px; /* Add some space at the top */
-  font-size: 18px; /* Optional: Adjust font size */
-  color: #666; /* Optional: Adjust text color */
+  font-size: 18px; 
+  color: #666; 
 }
 
  
@@ -800,7 +802,6 @@
 
 
 
-/* Existing styles remain unchanged */
 
 /* Responsive adjustments for tablets */
 @media screen and (max-width: 768px) {
@@ -821,7 +822,13 @@
   }
 
   .details-page-container {
-    flex-direction: column;
+    flex-direction: column; /* Stack children vertically */
+  }
+
+  .details-left-column, .details-right-column {
+    width: 100%; /* Full width for smaller screens */
+    margin-left: 0; /* Reset margins */
+    margin-right: 0;
   }
 
   .column-movie-card {
@@ -876,6 +883,13 @@
     flex-direction: column;
   }
 
+
+  .details-left-column, .details-right-column {
+    width: 100%; /* Full width for smaller screens */
+    margin-left: 0; /* Reset margins */
+    margin-right: 0;
+  }
+
   .details-movie-poster,
   .details-movie-info {
     width: 100%;
@@ -918,7 +932,23 @@
   .text-display-movie-item {
     width: 80%;
   }
+
+  .details-page-container,
+  .rating-review-form,
+  .details-movie-info,
+  .submit-button-container {
+    flex-direction: column;
+  }
+
+  .details-left-column, .details-right-column {
+    width: 100%; /* Full width for smaller screens */
+    margin-left: 0; /* Reset margins */
+    margin-right: 0;
+  }
+
 }
+
+
 
 /* Additional styles to prevent unintentional wrapping */
 * {
