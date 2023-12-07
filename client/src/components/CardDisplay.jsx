@@ -1,5 +1,3 @@
-import '../App.css';
-
 // CardDisplay.jsx
 // every data is a movie object from external api
 import '../App.css';
