@@ -41,7 +41,7 @@ model Movie {
   title        String
   posterPath   String
   rating       Int?
-  review       String?
+  review        String? @db.Text
   updatedAt    DateTime @updatedAt
   collection   Collection @relation(fields: [collectionId], references: [id])
   collectionId Int
